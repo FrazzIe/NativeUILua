@@ -739,9 +739,12 @@ function UIMenu:ProcessMouse()
 		return
 	end
 
-	local SafeZone = GetSafeZoneBounds()
+    local SafeZone = {X = 0, Y = 0}
+    if self.Settings.ScaleWithSafezone then
+	   SafeZone = GetSafeZoneBounds()
+    end
 
-	local Limit = #self.Items - 1
+	local Limit = #self.Items
 	local Counter = 0
 
 	ShowCursorThisFrame()
@@ -761,7 +764,7 @@ function UIMenu:ProcessMouse()
 	end
 
 	for i = self.Pagination.Min + 1, Limit, 1 do
-		local X, Y = self.Position.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + (Counter * 38)
+		local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + (Counter * 38) + SafeZone.Y
 		local Width, Height = 431 + self.WidthOffset, 38
 		local Item = self.Items[i]
 		local Type, SubType = Item()
@@ -775,25 +778,25 @@ function UIMenu:ProcessMouse()
 						self.Controls.MousePressed = true
 						if Item:Selected() and Item:Enabled() then
 							if SubType == "UIMenuListItem" then
-								if IsMouseInBounds(Item.LeftArrow.X, Item.LeftArrow.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+								if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height ) then
 									self:GoLeft()
-								elseif not IsMouseInBounds(Item.RightArrow.X, Item.RightArrow.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+								elseif not IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
 									self:SelectItem()
 								end
-								if IsMouseInBounds(Item.RightArrow.X, Item.RightArrow.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+								if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
 									self:GoRight()
-								elseif not IsMouseInBounds(Item.LeftArrow.X, Item.LeftArrow.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+								elseif not IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
 									self:SelectItem()
 								end
 							elseif SubType == "UIMenuSliderItem" then
-								if IsMouseInBounds(Item.LeftArrow.X, Item.LeftArrow.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+								if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
 									self:GoLeft()
-								elseif not IsMouseInBounds(Item.RightArrow.X, Item.RightArrow.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+								elseif not IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
 									self:SelectItem()
 								end
-								if IsMouseInBounds(Item.RightArrow.X, Item.RightArrow.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+								if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
 									self:GoRight()
-								elseif not IsMouseInBounds(Item.LeftArrow.X, Item.LeftArrow.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+								elseif not IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
 									self:SelectItem()
 								end
 							else
@@ -812,17 +815,17 @@ function UIMenu:ProcessMouse()
 						while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_X, _Y, _Width, _Height) do
 							if Item:Selected() and Item:Enabled() then
 								if SubType == "UIMenuListItem" then
-									if IsMouseInBounds(Item.LeftArrow.X, Item.LeftArrow.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+									if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
 										self:GoLeft()
 									end
-									if IsMouseInBounds(Item.RightArrow.X, Item.RightArrow.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+									if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
 										self:GoRight()
 									end
 								elseif SubType == "UIMenuSliderItem" then
-									if IsMouseInBounds(Item.LeftArrow.X, Item.LeftArrow.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+									if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
 										self:GoLeft()
 									end
-									if IsMouseInBounds(Item.RightArrow.X, Item.RightArrow.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+									if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
 										self:GoRight()
 									end
 								end
@@ -847,7 +850,7 @@ function UIMenu:ProcessMouse()
 		Counter = Counter + 1
 	end
 
-	local ExtraX, ExtraY = self.Position.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY
+	local ExtraX, ExtraY = self.Position.X  + SafeZone.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY  + SafeZone.Y
 
 	if #self.Items <= self.Pagination.Total + 1 then return end
 

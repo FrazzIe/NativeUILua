@@ -1,8 +1,11 @@
 resource_manifest_version '05cfa83c-a124-4cfa-a768-c24a5811d8f9'
 
+--[[
+All items unpacked
+
 client_scripts {
-		"Utils.lua",
-		"elements/UIResRectangle.lua",
+    "Utils.lua",
+    "elements/UIResRectangle.lua",
     "elements/UIResText.lua",
     "elements/Sprite.lua",
     "elements/StringMeasurer.lua",
@@ -14,5 +17,9 @@ client_scripts {
     "items/UIMenuColouredItem.lua",
     "UIMenu.lua",
     "MenuPool.lua",
-    "NativeUI.lua",
 }
+
+All items packed
+--]]
+
+client_script "NativeUI.lua",

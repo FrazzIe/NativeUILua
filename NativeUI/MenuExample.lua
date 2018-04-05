@@ -1,5 +1,6 @@
 ketchup = false
 dish = "Banana"
+quantity = 1
 _menuPool = MenuPool.New()
 mainMenu = UIMenu.New("Native UI", "~b~NATIVEUI SHOWCASE")
 _menuPool:Add(mainMenu)
@@ -27,6 +28,7 @@ function AddMenuFoods(menu)
         "Apple",
         "Pizza",
         "Quartilicious",
+        "Steak",
         0xF00D,
     }
     local newitem = UIMenuListItem.New("Food", foods, 1)
@@ -39,6 +41,19 @@ function AddMenuFoods(menu)
     end
 end
 
+function AddMenuFoodCount(menu)
+    local amount = {}
+    for i = 1, 100 do amount[i] = i end
+    local newitem = UIMenuSliderItem.New("Quantity", amount, 1, false)
+    menu:AddItem(newitem)
+    menu.OnSliderChange = function(sender, item, index)
+        if item == newitem then
+            quantity = item:IndexToItem(index)
+            ShowNotification("Preparing ~r~" .. quantity .. " ~b~" .. dish .. "(s)~w~...")
+        end
+    end
+end
+
 function AddMenuCook(menu)
     local newitem = UIMenuItem.New("Cook!", "Cook the dish with the appropriate ingredients and ketchup.")
     newitem:SetLeftBadge(BadgeStyle.Star)
@@ -46,9 +61,9 @@ function AddMenuCook(menu)
     menu:AddItem(newitem)
     menu.OnItemSelect = function(sender, item, index)
         if item == newitem then
-            local string = "You have ordered ~b~"..dish.."~w~ ~r~with~w~ ketchup."
+            local string = "You have ordered ~r~" .. quantity .. " ~b~"..dish.."(s)~w~ ~r~with~w~ ketchup."
             if not ketchup then
-                string = "You have ordered ~b~"..dish.."~w~ ~r~without~w~ ketchup."
+                string = "You have ordered ~r~" .. quantity .. " ~b~"..dish.."(s)~w~ ~r~without~w~ ketchup."
             end
             ShowNotification(string)
         end
@@ -69,6 +84,7 @@ end
 
 AddMenuKetchup(mainMenu)
 AddMenuFoods(mainMenu)
+AddMenuFoodCount(mainMenu)
 AddMenuCook(mainMenu)
 AddMenuAnotherMenu(mainMenu)
 _menuPool:RefreshIndex()

@@ -649,7 +649,7 @@ function UIMenu:Draw()
 		DrawScaleformMovieFullscreen(self.InstructionalScaleform, 255, 255, 255, 255, 0)
 	end
 
-	if self.Settings.ScaleWithSafeZone then
+	if self.Settings.ScaleWithSafezone then
 		ScreenDrawPositionBegin(76, 84)
 		ScreenDrawPositionRatio(0, 0, 0, 0)
 	end
@@ -718,7 +718,7 @@ function UIMenu:Draw()
 		end
 	end
 
-	if self.Settings.ScaleWithSafeZone then
+	if self.Settings.ScaleWithSafezone then
 		ScreenDrawPositionEnd()
 	end
 end

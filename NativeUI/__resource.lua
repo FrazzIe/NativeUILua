@@ -1,16 +1,18 @@
 resource_manifest_version '05cfa83c-a124-4cfa-a768-c24a5811d8f9'
 
-client_script "Utils.lua"
-client_script "elements/UIResRectangle.lua"
-client_script "elements/UIResText.lua"
-client_script "elements/Sprite.lua"
-client_script "elements/StringMeasurer.lua"
-client_script "elements/Badge.lua"
-client_script "items/UIMenuItem.lua"
-client_script "items/UIMenuCheckboxItem.lua"
-client_script "items/UIMenuListItem.lua"
-client_script "items/UIMenuSliderItem.lua"
-client_script "items/UIMenuColouredItem.lua"
-client_script "UIMenu.lua"
-client_script "MenuPool.lua"
---client_script "MenuExample.lua"
+client_scripts {
+		"Utils.lua",
+		"elements/UIResRectangle.lua",
+    "elements/UIResText.lua",
+    "elements/Sprite.lua",
+    "elements/StringMeasurer.lua",
+    "elements/Badge.lua",
+    "items/UIMenuItem.lua",
+    "items/UIMenuCheckboxItem.lua",
+    "items/UIMenuListItem.lua",
+    "items/UIMenuSliderItem.lua",
+    "items/UIMenuColouredItem.lua",
+    "UIMenu.lua",
+    "MenuPool.lua",
+    "NativeUI.lua",
+}

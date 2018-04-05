@@ -3,8 +3,7 @@
 
 Original: https://github.com/Guad/NativeUI
 
-Include it in your `__resource.lua` to use
-`client_script '@NativeUI/NativeUI.lua'`
+Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
 
 ## Creation Functions
 

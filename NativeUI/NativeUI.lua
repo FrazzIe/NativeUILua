@@ -1,3 +1,33 @@
+UIResRectangle = setmetatable({}, UIResRectangle)
+UIResRectangle.__index = UIResRectangle
+UIResRectangle.__call = function() return "Rectangle" end
+UIResText = setmetatable({}, UIResText)
+UIResText.__index = UIResText
+UIResText.__call = function() return "Text" end
+Sprite = setmetatable({}, Sprite)
+Sprite.__index = Sprite
+Sprite.__call = function() return "Sprite" end
+UIMenuItem = setmetatable({}, UIMenuItem)
+UIMenuItem.__index = UIMenuItem
+UIMenuItem.__call = function() return "UIMenuItem", "UIMenuItem" end
+UIMenuCheckboxItem = setmetatable({}, UIMenuCheckboxItem)
+UIMenuCheckboxItem.__index = UIMenuCheckboxItem
+UIMenuCheckboxItem.__call = function() return "UIMenuItem", "UIMenuCheckboxItem" end
+UIMenuListItem = setmetatable({}, UIMenuListItem)
+UIMenuListItem.__index = UIMenuListItem
+UIMenuListItem.__call = function() return "UIMenuItem", "UIMenuListItem" end
+UIMenuSliderItem = setmetatable({}, UIMenuSliderItem)
+UIMenuSliderItem.__index = UIMenuSliderItem
+UIMenuSliderItem.__call = function() return "UIMenuItem", "UIMenuSliderItem" end
+UIMenuColouredItem = setmetatable({}, UIMenuColouredItem)
+UIMenuColouredItem.__index = UIMenuColouredItem
+UIMenuColouredItem.__call = function() return "UIMenuItem", "UIMenuColouredItem" end
+UIMenu = setmetatable({}, UIMenu)
+UIMenu.__index = UIMenu
+UIMenu.__call = function() return "UIMenu" end
+MenuPool = setmetatable({}, MenuPool)
+MenuPool.__index = MenuPool
+
 function math.round(num, numDecimalPlaces)
 	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
@@ -52,10 +82,6 @@ end
 function Controller()
 	return not IsInputDisabled(2)
 end
-
-UIResRectangle = setmetatable({}, UIResRectangle)
-UIResRectangle.__index = UIResRectangle
-UIResRectangle.__call = function() return "Rectangle" end
 
 function UIResRectangle.New(X, Y, Width, Height, R, G, B, A)
 	local _UIResRectangle = {
@@ -115,10 +141,6 @@ function DrawRectangle(X, Y, Width, Height, R, G, B, A)
     Height = Height / Resolution.Height
     DrawRect(X + Width * 0.5, Y + Height * 0.5, Width, Height, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 end
-
-UIResText = setmetatable({}, UIResText)
-UIResText.__index = UIResText
-UIResText.__call = function() return "Text" end
 
 function GetCharacterCount(str)
     local characters = 0
@@ -317,10 +339,6 @@ function DrawText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Ou
     EndTextCommandDisplayText(X, Y)
 end
 
-Sprite = setmetatable({}, Sprite)
-Sprite.__index = Sprite
-Sprite.__call = function() return "Sprite" end
-
 function Sprite.New(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)
 	local _Sprite = {
 		TxtDictionary = tostring(TxtDictionary),
@@ -491,10 +509,6 @@ function GetBadgeColour(Badge, Selected)
 	end
 end
 
-UIMenuItem = setmetatable({}, UIMenuItem)
-UIMenuItem.__index = UIMenuItem
-UIMenuItem.__call = function() return "UIMenuItem", "UIMenuItem" end
-
 function UIMenuItem.New(Text, Description)
 	_UIMenuItem = {
 		Rectangle = UIResRectangle.New(0, 0, 431, 38, 255, 255, 255, 20),
@@ -654,10 +668,6 @@ function UIMenuItem:Draw()
 	self.Text:Draw()
 end
 
-UIMenuCheckboxItem = setmetatable({}, UIMenuCheckboxItem)
-UIMenuCheckboxItem.__index = UIMenuCheckboxItem
-UIMenuCheckboxItem.__call = function() return "UIMenuItem", "UIMenuCheckboxItem" end
-
 function UIMenuCheckboxItem.New(Text, Check, Description)
 	local _UIMenuCheckboxItem = {
 		Base = UIMenuItem.New(Text or "", Description or ""),
@@ -766,10 +776,6 @@ function UIMenuCheckboxItem:Draw()
 	end
 	self.CheckedSprite:Draw()
 end
-
-UIMenuListItem = setmetatable({}, UIMenuListItem)
-UIMenuListItem.__index = UIMenuListItem
-UIMenuListItem.__call = function() return "UIMenuItem", "UIMenuListItem" end
 
 function UIMenuListItem.New(Text, Items, Index, Description)
 	if type(Items) ~= "table" then Items = {} end
@@ -935,10 +941,6 @@ function UIMenuListItem:Draw()
 
 	self.ItemText:Draw()
 end
-
-UIMenuSliderItem = setmetatable({}, UIMenuSliderItem)
-UIMenuSliderItem.__index = UIMenuSliderItem
-UIMenuSliderItem.__call = function() return "UIMenuItem", "UIMenuSliderItem" end
 
 function UIMenuSliderItem.New(Text, Items, Index, Description, Divider)
 	if type(Items) ~= "table" then Items = {} end
@@ -1106,10 +1108,6 @@ function UIMenuSliderItem:Draw()
 	end
 end
 
-UIMenuColouredItem = setmetatable({}, UIMenuColouredItem)
-UIMenuColouredItem.__index = UIMenuColouredItem
-UIMenuColouredItem.__call = function() return "UIMenuItem", "UIMenuColouredItem" end
-
 function UIMenuColouredItem.New(Text, Description, MainColour, HighlightColour)
 	if type(Colour) ~= "table" then Colour = {R = 0, G = 0, B = 0, A = 255} end
 	if type(HighlightColour) ~= "table" then Colour = {R = 255, G = 255, B = 255, A = 255} end
@@ -1215,10 +1213,6 @@ function UIMenuColouredItem:Draw()
 	self.Rectangle:Draw()
 	self.Base:Draw()
 end
-
-UIMenu = setmetatable({}, UIMenu)
-UIMenu.__index = UIMenu
-UIMenu.__call = function() return "UIMenu" end
 
 function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
 	local X, Y = tonumber(X) or 0, tonumber(Y) or 0
@@ -2197,9 +2191,6 @@ function UIMenu:UpdateScaleform()
 	PushScaleformMovieFunctionParameterInt(-1)
 	PopScaleformMovieFunction()
 end
-
-MenuPool = setmetatable({}, MenuPool)
-MenuPool.__index = MenuPool
 
 function MenuPool.New()
 	local _MenuPool = {

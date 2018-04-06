@@ -127,10 +127,8 @@ function UIResText:Text(Text)
 end
 
 function UIResText:Draw()
-    local Resolution = GetScreenResolutionMaintainRatio()
     local Position = self:Position()
-    Position.X = Position.X / Resolution.Width
-    Position.Y = Position.Y / Resolution.Height
+    Position.X, Position.Y = FormatXWYH(Position.X, Position.Y)
 
     SetTextFont(self.Font)
     SetTextScale(1.0, self.Scale)
@@ -164,10 +162,7 @@ function UIResText:Draw()
 end
 
 function DrawText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
-    local Resolution = GetScreenResolutionMaintainRatio()
-    X = X / Resolution.Width
-    Y = Y / Resolution.Height
-
+    X, Y = FormatXWYH(X, Y)
     SetTextFont(Font or 0)
     SetTextScale(1.0, Scale or 0)
     SetTextColour(R or 255, G or 255, B or 255, A or 255)

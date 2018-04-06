@@ -52,16 +52,17 @@ function Sprite:Draw()
 	local Resolution = GetScreenResolutionMaintainRatio()
 	local Position = self:Position()
 	local Size = self:Size()
-	Size.Width = Size.Width / Resolution.Width
-	Size.Height = Size.Height / Resolution.Height
-	DrawSprite(self.TxtDictionary, self.TxtName, (Position.X / Resolution.Width) + Size.Width * 0.5, (Position.Y / Resolution.Height) + Size.Height * 0.5, Size.Width, Size.Height, self.Heading, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
+	Size.Width, Size.Height = FormatXWYH(Size.Width, Size.Height)
+    Position.X, Position.Y = FormatXWYH(Position.X, Position.Y)
+	DrawSprite(self.TxtDictionary, self.TxtName, Position.X + Size.Width * 0.5, Position.Y + Size.Height * 0.5, Size.Width, Size.Height, self.Heading, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
 end
 
 function DrawTexture(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)
 	if not HasStreamedTextureDictLoaded(tostring(TxtDictionary) or "") then
 		RequestStreamedTextureDict(tostring(TxtDictionary) or "", true)
 	end
-	local Resolution = GetScreenResolutionMaintainRatio()
 	X, Y, Width, Height = X or 0, Y or 0, Width or 0, Height or 0
-	DrawSprite(tostring(TxtDictionary) or "", tostring(TxtName) or "", (tonumber(X) / Resolution.Width) + (tonumber(Width) / Resolution.Width) * 0.5, (tonumber(Y) / Resolution.Height) + (tonumber(Height) / Resolution.Height) * 0.5, tonumber(Width) / Resolution.Width, tonumber(Height) / Resolution.Height, tonumber(Heading) or 0, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
+    X, Y = FormatXWYH(X, Y)
+    Width, Height = FormatXWYH(Width, Height)
+	DrawSprite(tostring(TxtDictionary) or "", tostring(TxtName) or "", X + Width * 0.5, Y + Height * 0.5, Width, Height, tonumber(Heading) or 0, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 end

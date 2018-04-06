@@ -43,20 +43,16 @@ function UIResRectangle:Colour(R, G, B, A)
 end
 
 function UIResRectangle:Draw()
-	local Resolution = GetScreenResolutionMaintainRatio()
 	local Position = self:Position()
 	local Size = self:Size()
-	Size.Width = Size.Width / Resolution.Width
-	Size.Height = Size.Height / Resolution.Height
-	DrawRect((Position.X / Resolution.Width) + Size.Width * 0.5, (Position.Y / Resolution.Height) + Size.Height * 0.5, Size.Width, Size.Height, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
+	Size.Width, Size.Height = FormatXWYH(Size.Width, Size.Height)
+    Position.X, Position.Y = FormatXWYH(Position.X, Position.Y)
+	DrawRect(Position.X + Size.Width * 0.5, Position.Y + Size.Height * 0.5, Size.Width, Size.Height, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
 end
 
 function DrawRectangle(X, Y, Width, Height, R, G, B, A)
-    local Resolution = GetScreenResolutionMaintainRatio()
     X, Y, Width, Height = X or 0, Y or 0, Width or 0, Height or 0
-    X = X / Resolution.Width
-    Y = Y / Resolution.Height
-    Width = Width / Resolution.Width
-    Height = Height / Resolution.Height
+    X, Y = FormatXWYH(X, Y)
+    Width, Height = FormatXWYH(Width, Height)
     DrawRect(X + Width * 0.5, Y + Height * 0.5, Width, Height, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 end

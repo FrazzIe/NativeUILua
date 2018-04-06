@@ -28,6 +28,13 @@ UIMenu.__call = function() return "UIMenu" end
 MenuPool = setmetatable({}, MenuPool)
 MenuPool.__index = MenuPool
 
+function FormatXWYH(Value, Value2)
+    local W, H = GetScreenResolution()
+    local XW = Value/W - ((Value / W) - (Value / 1920))
+    local YH = Value2/H - ((Value2 / H) - (Value2 / 1080))
+    return XW, YH
+end
+
 function math.round(num, numDecimalPlaces)
 	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
@@ -64,7 +71,10 @@ end
 
 function IsMouseInBounds(X, Y, Width, Height)
 	local Resolution = GetScreenResolutionMaintainRatio()
-	local MX, MY = math.round(GetControlNormal(0, 239) * Resolution.Width), math.round(GetControlNormal(0, 240) * Resolution.Height)
+	local MX, MY = math.round(GetControlNormal(0, 239) * 1920), math.round(GetControlNormal(0, 240) * 1080)
+    MX, MY = FormatXWYH(MX, MY)
+    X, Y = FormatXWYH(X, Y)
+    Width, Height = FormatXWYH(Width, Height)
 	return (MX >= X and MX <= X + Width) and (MY > Y and MY < Y + Height)
 end
 
@@ -74,7 +84,7 @@ function GetSafeZoneBounds()
 	SafeSize = (SafeSize * 100) - 90
 	SafeSize = 10 - SafeSize
 
-	local W, H = GetActiveScreenResolution()
+	local W, H = 1920, 1080
 
 	return {X = math.round(SafeSize * ((W/H) * 5.4)), Y = math.round(SafeSize * 5.4)}
 end
@@ -124,21 +134,17 @@ function UIResRectangle:Colour(R, G, B, A)
 end
 
 function UIResRectangle:Draw()
-	local Resolution = GetScreenResolutionMaintainRatio()
 	local Position = self:Position()
 	local Size = self:Size()
-	Size.Width = Size.Width / Resolution.Width
-	Size.Height = Size.Height / Resolution.Height
-	DrawRect((Position.X / Resolution.Width) + Size.Width * 0.5, (Position.Y / Resolution.Height) + Size.Height * 0.5, Size.Width, Size.Height, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
+	Size.Width, Size.Height = FormatXWYH(Size.Width, Size.Height)
+    Position.X, Position.Y = FormatXWYH(Position.X, Position.Y)
+	DrawRect(Position.X + Size.Width * 0.5, Position.Y + Size.Height * 0.5, Size.Width, Size.Height, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
 end
 
 function DrawRectangle(X, Y, Width, Height, R, G, B, A)
-    local Resolution = GetScreenResolutionMaintainRatio()
     X, Y, Width, Height = X or 0, Y or 0, Width or 0, Height or 0
-    X = X / Resolution.Width
-    Y = Y / Resolution.Height
-    Width = Width / Resolution.Width
-    Height = Height / Resolution.Height
+    X, Y = FormatXWYH(X, Y)
+    Width, Height = FormatXWYH(Width, Height)
     DrawRect(X + Width * 0.5, Y + Height * 0.5, Width, Height, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 end
 
@@ -267,10 +273,8 @@ function UIResText:Text(Text)
 end
 
 function UIResText:Draw()
-    local Resolution = GetScreenResolutionMaintainRatio()
     local Position = self:Position()
-    Position.X = Position.X / Resolution.Width
-    Position.Y = Position.Y / Resolution.Height
+    Position.X, Position.Y = FormatXWYH(Position.X, Position.Y)
 
     SetTextFont(self.Font)
     SetTextScale(1.0, self.Scale)
@@ -304,10 +308,7 @@ function UIResText:Draw()
 end
 
 function DrawText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
-    local Resolution = GetScreenResolutionMaintainRatio()
-    X = X / Resolution.Width
-    Y = Y / Resolution.Height
-
+    X, Y = FormatXWYH(X, Y)
     SetTextFont(Font or 0)
     SetTextScale(1.0, Scale or 0)
     SetTextColour(R or 255, G or 255, B or 255, A or 255)
@@ -389,18 +390,19 @@ function Sprite:Draw()
 	local Resolution = GetScreenResolutionMaintainRatio()
 	local Position = self:Position()
 	local Size = self:Size()
-	Size.Width = Size.Width / Resolution.Width
-	Size.Height = Size.Height / Resolution.Height
-	DrawSprite(self.TxtDictionary, self.TxtName, (Position.X / Resolution.Width) + Size.Width * 0.5, (Position.Y / Resolution.Height) + Size.Height * 0.5, Size.Width, Size.Height, self.Heading, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
+	Size.Width, Size.Height = FormatXWYH(Size.Width, Size.Height)
+    Position.X, Position.Y = FormatXWYH(Position.X, Position.Y)
+	DrawSprite(self.TxtDictionary, self.TxtName, Position.X + Size.Width * 0.5, Position.Y + Size.Height * 0.5, Size.Width, Size.Height, self.Heading, self._Colour.R, self._Colour.G, self._Colour.B, self._Colour.A)
 end
 
 function DrawTexture(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)
 	if not HasStreamedTextureDictLoaded(tostring(TxtDictionary) or "") then
 		RequestStreamedTextureDict(tostring(TxtDictionary) or "", true)
 	end
-	local Resolution = GetScreenResolutionMaintainRatio()
 	X, Y, Width, Height = X or 0, Y or 0, Width or 0, Height or 0
-	DrawSprite(tostring(TxtDictionary) or "", tostring(TxtName) or "", (tonumber(X) / Resolution.Width) + (tonumber(Width) / Resolution.Width) * 0.5, (tonumber(Y) / Resolution.Height) + (tonumber(Height) / Resolution.Height) * 0.5, tonumber(Width) / Resolution.Width, tonumber(Height) / Resolution.Height, tonumber(Heading) or 0, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
+    X, Y = FormatXWYH(X, Y)
+    Width, Height = FormatXWYH(Width, Height)
+	DrawSprite(tostring(TxtDictionary) or "", tostring(TxtName) or "", X + Width * 0.5, Y + Height * 0.5, Width, Height, tonumber(Heading) or 0, tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 end
 
 CharacterMap = {

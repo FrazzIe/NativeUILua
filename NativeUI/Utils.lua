@@ -1,3 +1,10 @@
+function FormatXWYH(Value, Value2)
+    local W, H = GetScreenResolution()
+    local XW = Value/W - ((Value / W) - (Value / 1920))
+    local YH = Value2/H - ((Value2 / H) - (Value2 / 1080))
+    return XW, YH
+end
+
 function math.round(num, numDecimalPlaces)
 	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
@@ -34,7 +41,10 @@ end
 
 function IsMouseInBounds(X, Y, Width, Height)
 	local Resolution = GetScreenResolutionMaintainRatio()
-	local MX, MY = math.round(GetControlNormal(0, 239) * Resolution.Width), math.round(GetControlNormal(0, 240) * Resolution.Height)
+	local MX, MY = math.round(GetControlNormal(0, 239) * 1920), math.round(GetControlNormal(0, 240) * 1080)
+    MX, MY = FormatXWYH(MX, MY)
+    X, Y = FormatXWYH(X, Y)
+    Width, Height = FormatXWYH(Width, Height)
 	return (MX >= X and MX <= X + Width) and (MY > Y and MY < Y + Height)
 end
 
@@ -44,7 +54,7 @@ function GetSafeZoneBounds()
 	SafeSize = (SafeSize * 100) - 90
 	SafeSize = 10 - SafeSize
 
-	local W, H = GetActiveScreenResolution()
+	local W, H = 1920, 1080
 
 	return {X = math.round(SafeSize * ((W/H) * 5.4)), Y = math.round(SafeSize * 5.4)}
 end

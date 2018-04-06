@@ -83,12 +83,18 @@ function UIMenuColouredItem:Text(Text)
 	end
 end
 
-function UIMenuColouredItem:RightLabel(Text)
-	if tostring(Text) and Text ~= nil then
-		self.Base.LabelText:Text(tostring(Text))
-	else
-		return self.Base.LabelText:Text()
-	end
+function UIMenuColouredItem:RightLabel(Text, MainColour, HighlightColour)
+    if tostring(Text) and Text ~= nil then
+        if type(MainColour) == "table" then
+            self.Base.Label.MainColour = MainColour
+        end
+        if type(HighlightColour) == "table" then
+            self.Base.Label.HighlightColour = HighlightColour
+        end
+        self.Base.Label.Text:Text(tostring(Text))
+    else
+        return self.Base.Label.Text:Text()
+    end
 end
 
 function UIMenuColouredItem:SetLeftBadge(Badge)

@@ -10,7 +10,11 @@ function UIMenuItem.New(Text, Description)
 		SelectedSprite = Sprite.New("commonmenu", "gradient_nav", 0, 0, 431, 38),
 		LeftBadge = { Sprite = Sprite.New("commonmenu", "", 0, 0, 40, 40), Badge = 0},
 		RightBadge = { Sprite = Sprite.New("commonmenu", "", 0, 0, 40, 40), Badge = 0},
-		LabelText = UIResText.New("", 0, 0, 0.35, 245, 245, 245, 255, 0, "Right"),
+		Label = {
+            Text = UIResText.New("", 0, 0, 0.35, 245, 245, 245, 255, 0, "Right"),
+            MainColour = {R = 255, G = 255, B = 255, A = 255},
+            HighlightColour = {R = 0, G = 0, B = 0, A = 255},
+        },
 		_Selected = false,
 		_Hovered = false,
 		_Enabled = true,
@@ -81,15 +85,21 @@ function UIMenuItem:Position(Y)
 		self.Text:Position(8 + self._Offset.X, Y + 147 + self._Offset.Y)
 		self.LeftBadge.Sprite:Position(0 + self._Offset.X, Y + 142 + self._Offset.Y)
 		self.RightBadge.Sprite:Position(385 + self._Offset.X, Y + 142 + self._Offset.Y)
-		self.LabelText:Position(420 + self._Offset.X, Y + 148 + self._Offset.Y)
+		self.Label.Text:Position(420 + self._Offset.X, Y + 148 + self._Offset.Y)
 	end
 end
 
-function UIMenuItem:RightLabel(Text)
+function UIMenuItem:RightLabel(Text, MainColour, HighlightColour)
 	if tostring(Text) and Text ~= nil then
-		self.LabelText:Text(tostring(Text))
+        if type(MainColour) == "table" then
+            self.Label.MainColour = MainColour
+        end
+        if type(HighlightColour) == "table" then
+            self.Label.HighlightColour = HighlightColour
+        end
+		self.Label.Text:Text(tostring(Text))
 	else
-		return self.LabelText:Text()
+		return self.Label.Text:Text()
 	end
 end
 
@@ -128,11 +138,14 @@ function UIMenuItem:Draw()
 	if self._Enabled then
 		if self._Selected then
 			self.Text:Colour(0, 0, 0, 255)
+			self.Label.Text:Colour(self.Label.HighlightColour.R, self.Label.HighlightColour.G, self.Label.HighlightColour.B, self.Label.HighlightColour.A)
 		else
 			self.Text:Colour(245, 245, 245, 255)
+			self.Label.Text:Colour(self.Label.MainColour.R, self.Label.MainColour.G, self.Label.MainColour.B, self.Label.MainColour.A)
 		end
 	else
 		self.Text:Colour(163, 159, 148, 255)
+        self.Label.Text:Colour(163, 159, 148, 255)
 	end
 
 	if self.LeftBadge.Badge == BadgeStyle.None then
@@ -153,9 +166,9 @@ function UIMenuItem:Draw()
 		self.RightBadge.Sprite:Draw()
 	end
 
-	if self.LabelText:Text() ~= "" and string.len(self.LabelText:Text()) > 0 then
-		self.LabelText:Position(420 + self._Offset.X + self.ParentMenu.WidthOffset, self.LabelText.Y)
-		self.LabelText:Draw()
+	if self.Label.Text:Text() ~= "" and string.len(self.Label.Text:Text()) > 0 then
+		self.Label.Text:Position(420 + self._Offset.X + self.ParentMenu.WidthOffset, self.Label.Text.Y)
+		self.Label.Text:Draw()
 	end
 
 	self.Text:Draw()

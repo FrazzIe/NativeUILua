@@ -13,13 +13,13 @@ Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
 
 `NativeUI.CreateItem(Text, Description)` create a UIMenuItem
 
-`NativeUI.CreateColouredItem(Text, Description)` create a UIMenuColouredItem
+`NativeUI.CreateColouredItem(Text, Description, MainColour, HighlightColour)` create a UIMenuColouredItem
 
-`NativeUI.CreateCheckboxItem(Text, Description)` create a UIMenuCheckboxItem
+`NativeUI.CreateCheckboxItem(Text, Check, Description)` create a UIMenuCheckboxItem
 
-`NativeUI.CreateListItem(Text, Description)` create a UIMenuListItem
+`NativeUI.CreateListItem(Text, Items, Index, Description)` create a UIMenuListItem
 
-`NativeUI.CreateSliderItem(Text, Description)` create a UIMenuSliderItem
+`NativeUI.CreateSliderItem(Text, Items, Index, Description, Divider)` create a UIMenuSliderItem
 
 `NativeUI.CreateSprite(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)` create a Sprite
 

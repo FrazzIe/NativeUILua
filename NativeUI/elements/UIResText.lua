@@ -79,7 +79,7 @@ function MeasureStringWidthNoConvert(str, font, scale)
 end
 
 function MeasureStringWidth(str, font, scale)
-    return MeasureStringWidthNoConvert(str, font, scale) * GetScreenResolutionMaintainRatio().Width
+    return MeasureStringWidthNoConvert(str, font, scale) * 1920
 end
 
 function UIResText.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)

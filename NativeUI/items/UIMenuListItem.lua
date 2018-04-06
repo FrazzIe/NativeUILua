@@ -151,10 +151,10 @@ function UIMenuListItem:Draw()
 	end
 
 	local Text = tostring(self.Items[self._Index])
-	local Offset = MeasureString(Text)
+	local Offset = MeasureStringWidth(Text, 0, 0.35)
 
 	self.ItemText:Text(Text)
-	self.LeftArrow:Position(375 - Offset - 2 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, self.LeftArrow.Y)
+	self.LeftArrow:Position(378 - Offset + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, self.LeftArrow.Y)
 
 	if self:Selected() then
 		self.LeftArrow:Draw()

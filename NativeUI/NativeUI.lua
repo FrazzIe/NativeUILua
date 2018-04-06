@@ -1476,6 +1476,7 @@ end
 
 function UIMenu:Clear()
 	self.Items = {}
+    self.ReDraw = true
 	self:RecaulculateDescriptionPosition()
 end
 

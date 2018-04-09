@@ -12,8 +12,8 @@ function UIMenuListItem.New(Text, Items, Index, Description)
 		RightArrow = Sprite.New("commonmenu", "arrowright", 280, 105, 30, 30),
 		ItemText = UIResText.New("", 290, 104, 0.35, 255, 255, 255, 255, 0, "Right"),
 		_Index = tonumber(Index) or 1,
-		OnListChanged = function(newindex) end,
-		OnListSelected = function(index) end,
+		OnListChanged = function(menu, item, newindex) end,
+		OnListSelected = function(menu, item, newindex) end,
 	}
 	return setmetatable(_UIMenuListItem, UIMenuListItem)
 end

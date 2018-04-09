@@ -15,8 +15,8 @@ function UIMenuSliderItem.New(Text, Items, Index, Description, Divider)
 		Slider = UIResRectangle.New(0, 0, 75, 9, 57, 116, 200, 255),
 		Divider = UIResRectangle.New(0, 0, 2.5, 20, 245, 245, 245, 255),
 		_Index = tonumber(Index) or 1,
-		OnSliderChanged = function(newindex) end,
-		OnSliderSelected = function(index) end,
+		OnSliderChanged = function(menu, item, newindex) end,
+		OnSliderSelected = function(menu, item, newindex) end,
 	}
 	return setmetatable(_UIMenuSliderItem, UIMenuSliderItem)
 end

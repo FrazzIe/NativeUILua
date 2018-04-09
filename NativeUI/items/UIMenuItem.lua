@@ -20,7 +20,7 @@ function UIMenuItem.New(Text, Description)
 		_Enabled = true,
 		_Offset = {X = 0, Y = 0},
 		ParentMenu = nil,
-		Activated = function(menu) end
+		Activated = function(menu, item) end
 	}
 	return setmetatable(_UIMenuItem, UIMenuItem)
 end

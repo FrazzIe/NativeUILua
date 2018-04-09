@@ -536,13 +536,13 @@ function UIMenu:GoLeft()
 		local Item = self.Items[self:CurrentSelection()]
 		Item:Index(Item._Index - 1)
 		self.OnListChange(self, Item, Item._Index)
-		Item.OnListChanged(Item._Index)
+		Item.OnListChanged(self, Item, Item._Index)
 		PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
 	elseif subtype == "UIMenuSliderItem" then
 		local Item = self.Items[self:CurrentSelection()]
 		Item:Index(Item._Index - 1)
 		self.OnSliderChange(self, Item, Item:Index())
-		Item.OnSliderChanged(Item:Index())
+		Item.OnSliderChanged(self, Item, Item._Index)
 		PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
 	end
 end
@@ -557,13 +557,13 @@ function UIMenu:GoRight()
 		local Item = self.Items[self:CurrentSelection()]
 		Item:Index(Item._Index + 1)
 		self.OnListChange(self, Item, Item._Index)
-		Item.OnListChanged(Item._Index)
+		Item.OnListChanged(self, Item, Item._Index)
 		PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
 	elseif subtype == "UIMenuSliderItem" then
 		local Item = self.Items[self:CurrentSelection()]
 		Item:Index(Item._Index + 1)
 		self.OnSliderChange(self, Item, Item:Index())
-		Item.OnSliderChanged(Item:Index())
+		Item.OnSliderChanged(self, Item, Item._Index)
 		PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
 	end
 end
@@ -579,11 +579,11 @@ function UIMenu:SelectItem()
 		Item.Checked = not Item.Checked
 		PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
 		self.OnCheckboxChange(self, Item, Item.Checked)
-		Item.CheckboxEvent(Item, Item.Checked)
+		Item.CheckboxEvent(self, Item, Item.Checked)
 	elseif subtype == "UIMenuListItem" then
 		PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
 		self.OnListSelect(self, Item, Item._Index)
-		Item.OnListSelected(Item._Index)
+		Item.OnListSelected(self, Item, Item._Index)
 	elseif subtype == "UIMenuSliderItem" then
 		PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
 		self.OnSliderSelect(self, Item, Item._Index)
@@ -591,7 +591,7 @@ function UIMenu:SelectItem()
 	else
 		PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
 		self.OnItemSelect(self, Item, self:CurrentSelection())
-		Item.Activated(self)
+		Item.Activated(self, Item)
 		if not self.Children[Item] then
 			return
 		end

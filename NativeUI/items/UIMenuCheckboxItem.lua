@@ -7,7 +7,7 @@ function UIMenuCheckboxItem.New(Text, Check, Description)
 		Base = UIMenuItem.New(Text or "", Description or ""),
 		CheckedSprite = Sprite.New("commonmenu", "shop_box_blank", 410, 95, 50, 50),
 		Checked = tobool(Check),
-		CheckboxEvent = function(item, checked) end,
+		CheckboxEvent = function(menu, item, checked) end,
 	}
 	return setmetatable(_UIMenuCheckboxItem, UIMenuCheckboxItem)
 end

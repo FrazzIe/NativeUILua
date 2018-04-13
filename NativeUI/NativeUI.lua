@@ -525,7 +525,7 @@ function UIResText:Draw()
     EndTextCommandDisplayText(Position.X, Position.Y)
 end
 
-function DrawText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
+function RenderText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
     local X, Y = FormatXWYH(X, Y)
     SetTextFont(Font or 0)
     SetTextScale(1.0, Scale or 0)

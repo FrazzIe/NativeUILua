@@ -10,6 +10,7 @@ client_scripts {
     "elements/Sprite.lua",
     "elements/StringMeasurer.lua",
     "elements/Badge.lua",
+    "elements/Colours.lua",
     "items/UIMenuItem.lua",
     "items/UIMenuCheckboxItem.lua",
     "items/UIMenuListItem.lua",

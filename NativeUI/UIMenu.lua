@@ -757,7 +757,7 @@ function UIMenu:ProcessMouse()
 	if IsMouseInBounds(0, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
 		SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading() + 5)
 		SetCursorSprite(6)
-	elseif IsMouseInBounds(GetScreenResolutionMaintainRatio().Width - 30, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
+	elseif IsMouseInBounds(1920 - 30, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
 		SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading() - 5)
 		SetCursorSprite(7)	
 	elseif self.Settings.MouseEdgeEnabled then

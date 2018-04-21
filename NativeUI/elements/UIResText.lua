@@ -162,6 +162,7 @@ function UIResText:Draw()
 end
 
 function RenderText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
+    Text = tostring(Text)
     X, Y = FormatXWYH(X, Y)
     SetTextFont(Font or 0)
     SetTextScale(1.0, Scale or 0)
@@ -185,7 +186,8 @@ function RenderText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, 
 
     if tonumber(WordWrap) then
         if tonumber(WordWrap) ~= 0 then
-            SetTextWrap(X, X + (tonumber(WordWrap) / Resolution.Width))
+            WordWrap, _ = FormatXWYH(WordWrap, 0)
+            SetTextWrap(WordWrap, X - WordWrap)
         end
     end
 

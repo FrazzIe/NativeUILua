@@ -248,8 +248,9 @@ Colour = {
 
 function FormatXWYH(Value, Value2)
     local W, H = GetScreenResolution()
-    local XW = Value/W - ((Value / W) - (Value / 1920))
-    local YH = Value2/H - ((Value2 / H) - (Value2 / 1080))
+    local AW, AH = GetActiveScreenResolution()
+    local XW = Value/W - ((Value / W) - (Value / ((AW >= 1920) and AW or 1920)))
+    local YH = Value2/H - ((Value2 / H) - (Value2 / ((AH >= 1080) and AH or 1080)))
     return XW, YH
 end
 
@@ -280,11 +281,6 @@ end
 
 function string.starts(String, Start)
 	return string.sub(String, 1, string.len(Start)) == Start
-end
-
-function GetScreenResolutionMaintainRatio()
-	local W, H = GetActiveScreenResolution()
-	return {Width = 1080 * (W/H), Height = 1080}
 end
 
 function IsMouseInBounds(X, Y, Width, Height)
@@ -526,6 +522,7 @@ function UIResText:Draw()
 end
 
 function RenderText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
+    Text = tostring(Text)
     local X, Y = FormatXWYH(X, Y)
     SetTextFont(Font or 0)
     SetTextScale(1.0, Scale or 0)
@@ -549,7 +546,8 @@ function RenderText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, 
 
     if tonumber(WordWrap) then
         if tonumber(WordWrap) ~= 0 then
-            SetTextWrap(X, X + (tonumber(WordWrap) / Resolution.Width))
+            WordWrap, _ = FormatXWYH(WordWrap, 0)
+            SetTextWrap(WordWrap, X - WordWrap)
         end
     end
 
@@ -2208,7 +2206,7 @@ function UIMenu:ProcessMouse()
 	if IsMouseInBounds(0, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
 		SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading() + 5)
 		SetCursorSprite(6)
-	elseif IsMouseInBounds(GetScreenResolutionMaintainRatio().Width - 30, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
+	elseif IsMouseInBounds(1920 - 30, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
 		SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading() - 5)
 		SetCursorSprite(7)	
 	elseif self.Settings.MouseEdgeEnabled then
@@ -2528,6 +2526,14 @@ function MenuPool:DisableInstructionalButtons(bool)
 			Menu.Settings.InstructionalButtons = tobool(bool)
 		end
 	end
+end
+
+function MenuPool:MouseControlsEnabled(bool)
+    if bool ~= nil then
+        for _, Menu in pairs(self.Menus) do
+            Menu.Settings.MouseControlsEnabled = tobool(bool)
+        end
+    end
 end
 
 function MenuPool:RefreshIndex()

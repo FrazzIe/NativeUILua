@@ -1,7 +1,8 @@
 function FormatXWYH(Value, Value2)
     local W, H = GetScreenResolution()
-    local XW = Value/W - ((Value / W) - (Value / 1920))
-    local YH = Value2/H - ((Value2 / H) - (Value2 / 1080))
+    local AW, AH = GetActiveScreenResolution()
+    local XW = Value/W - ((Value / W) - (Value / ((AW >= 1920) and AW or 1920)))
+    local YH = Value2/H - ((Value2 / H) - (Value2 / ((AH >= 1080) and AH or 1080)))
     return XW, YH
 end
 
@@ -32,11 +33,6 @@ end
 
 function string.starts(String, Start)
 	return string.sub(String, 1, string.len(Start)) == Start
-end
-
-function GetScreenResolutionMaintainRatio()
-	local W, H = GetActiveScreenResolution()
-	return {Width = 1080 * (W/H), Height = 1080}
 end
 
 function IsMouseInBounds(X, Y, Width, Height)

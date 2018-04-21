@@ -49,7 +49,6 @@ function Sprite:Draw()
 	if not HasStreamedTextureDictLoaded(self.TxtDictionary) then
 		RequestStreamedTextureDict(self.TxtDictionary, true)
 	end
-	local Resolution = GetScreenResolutionMaintainRatio()
 	local Position = self:Position()
 	local Size = self:Size()
 	Size.Width, Size.Height = FormatXWYH(Size.Width, Size.Height)

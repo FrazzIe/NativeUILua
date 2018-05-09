@@ -79,7 +79,8 @@ function MeasureStringWidthNoConvert(str, font, scale)
 end
 
 function MeasureStringWidth(str, font, scale)
-    return MeasureStringWidthNoConvert(str, font, scale) * 1920
+    local W, H = GetResolution()
+    return MeasureStringWidthNoConvert(str, font, scale) * ((W >= 1920) and W or 1920)
 end
 
 function UIResText.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)

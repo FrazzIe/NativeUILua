@@ -1,6 +1,15 @@
+function GetResolution()
+    local W, H = GetActiveScreenResolution()
+    if (W/H) > 3.5 then
+        return GetScreenResolution()
+    else
+        return W, H
+    end
+end
+
 function FormatXWYH(Value, Value2)
     local W, H = GetScreenResolution()
-    local AW, AH = GetActiveScreenResolution()
+    local AW, AH = GetResolution()
     local XW = Value/W - ((Value / W) - (Value / ((AW >= 1920) and AW or 1920)))
     local YH = Value2/H - ((Value2 / H) - (Value2 / ((AH >= 1080) and AH or 1080)))
     return XW, YH

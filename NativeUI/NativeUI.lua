@@ -246,9 +246,18 @@ Colour = {
     Stunt2 = {R = 224, G = 50, B = 50, A = 255},
 }
 
+function GetResolution()
+    local W, H = GetActiveScreenResolution()
+    if (W/H) > 3.5 then
+        return GetScreenResolution()
+    else
+        return W, H
+    end
+end
+
 function FormatXWYH(Value, Value2)
     local W, H = GetScreenResolution()
-    local AW, AH = GetActiveScreenResolution()
+    local AW, AH = GetResolution()
     local XW = Value/W - ((Value / W) - (Value / ((AW >= 1920) and AW or 1920)))
     local YH = Value2/H - ((Value2 / H) - (Value2 / ((AH >= 1080) and AH or 1080)))
     return XW, YH
@@ -438,7 +447,8 @@ function MeasureStringWidthNoConvert(str, font, scale)
 end
 
 function MeasureStringWidth(str, font, scale)
-    return MeasureStringWidthNoConvert(str, font, scale) * 1920
+    local W, H = GetResolution()
+    return MeasureStringWidthNoConvert(str, font, scale) * ((W >= 1920) and W or 1920)
 end
 
 function UIResText.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)

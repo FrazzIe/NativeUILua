@@ -75,7 +75,7 @@ end
 function MenuPool:WidthOffset(offset)
 	if tonumber(offset) then
 		for _, Menu in pairs(self.Menus) do
-			Menu.WidthOffset = tonumber(offset)
+			Menu:SetMenuWidthOffset(tonumber(offset))
 		end
 	end
 end

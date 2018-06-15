@@ -90,15 +90,18 @@ function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
 end
 
 function UIMenu:SetMenuWidthOffset(Offset)
-	if tonumber(Offset) then
-		self.WidthOffset = math.floor(tonumber(Offset))
-		self.Logo:Size(431 + self.WidthOffset, 107)
-		self.Title:Position((self.WidthOffset + self.Position.X + 431) / 2, 20 + self.Position.Y)
-		self.PageCounter.Text:Position(425 + self.Position.X + self.WidthOffset, 110 + self.Position.Y)
-		if self.Banner ~= nil then
-			self.Banner:Size(431 + self.WidthOffset, 107)
-		end
-	end
+    if tonumber(Offset) then
+        self.WidthOffset = math.floor(tonumber(Offset))
+        self.Logo:Size(431 + self.WidthOffset, 107)
+        self.Title:Position((self.WidthOffset + self.Position.X + 431) / 2, 20 + self.Position.Y)
+        if self.Subtitle.Rectangle ~= nil then
+            self.Subtitle.Rectangle:Size(431 + self.WidthOffset + 100, 37)            
+            self.PageCounter.Text:Position(425 + self.Position.X + self.WidthOffset, 110 + self.Position.Y)
+        end
+        if self.Banner ~= nil then
+            self.Banner:Size(431 + self.WidthOffset, 107)
+        end
+    end
 end
 
 function UIMenu:DisEnableControls(bool)

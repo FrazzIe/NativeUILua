@@ -26,3 +26,19 @@ Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
 `NativeUI.CreateRectangle(X, Y, Width, Height, R, G, B, A)` create a Rectangle
 
 `NativeUI.CreateText(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)` create Text
+
+### Window(s)
+
+Used with `UIMenu` with functions `:AddWindow(Window)` and `:RemoveWindowAt(Index)`
+
+`NativeUI.CreateHeritageWindow(Mum, Dad)`
+
+### Panel(s)
+
+Currently only can be used with `UIMenuListItem` with functions `:AddPanel(Panel)` and `:RemovePanelAt(Index)`
+
+`NativeUI.CreateGridPanel(TopText, LeftText, RightText, BottomText)`
+
+`NativeUI.CreateColourPanel(Title, Colours)`
+
+`NativeUI.CreatePercentagePanel(MinText, MaxText)`

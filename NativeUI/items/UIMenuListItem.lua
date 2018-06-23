@@ -12,6 +12,7 @@ function UIMenuListItem.New(Text, Items, Index, Description)
 		RightArrow = Sprite.New("commonmenu", "arrowright", 280, 105, 30, 30),
 		ItemText = UIResText.New("", 290, 104, 0.35, 255, 255, 255, 255, 0, "Right"),
 		_Index = tonumber(Index) or 1,
+		Panels = {},
 		OnListChanged = function(menu, item, newindex) end,
 		OnListSelected = function(menu, item, newindex) end,
 	}
@@ -19,7 +20,7 @@ function UIMenuListItem.New(Text, Items, Index, Description)
 end
 
 function UIMenuListItem:SetParentMenu(Menu)
-	if Menu() == "UIMenu" then
+	if Menu ~= nil and Menu() == "UIMenu" then
 		self.Base.ParentMenu = Menu
 	else
 		return self.Base.ParentMenu
@@ -105,7 +106,9 @@ end
 function UIMenuListItem:ItemToIndex(Item)
 	for i = 1, #self.Items do
 		if type(Item) == type(self.Items[i]) and Item == self.Items[i] then
-			return self.Items[i]
+			return i
+		elseif type(self.Items[i]) == "table" and (type(Item) == type(self.Items[i].Name) or type(Item) == type(self.Items[i].Value)) and (Item == self.Items[i].Name or Item == self.Items[i].Value) then
+			return i
 		end
 	end
 end
@@ -131,6 +134,41 @@ function UIMenuListItem:RightLabel()
 	error("This item does not support a right label")
 end
 
+function UIMenuListItem:AddPanel(Panel)
+	if Panel() == "UIMenuPanel" then
+		table.insert(self.Panels, Panel)
+		Panel:SetParentItem(self)
+	end
+end
+
+function UIMenuListItem:RemovePanelAt(Index)
+	if tonumber(Index) then
+		if self.Panels[Index] then
+			table.remove(self.Panels, tonumber(Index))
+		end
+	end
+end
+
+function UIMenuListItem:FindPanelIndex(Panel)
+	if Panel() == "UIMenuPanel" then
+		for Index = 1, #self.Panels do
+			if self.Panels[Index] == Panel then
+				return Index
+			end
+		end
+	end
+	return nil
+end
+
+function UIMenuListItem:FindPanelItem()
+	for Index = #self.Items, 1, -1 do
+		if self.Items[Index].Panel then
+			return Index
+		end
+	end
+	return nil
+end
+
 function UIMenuListItem:Draw()
 	self.Base:Draw()
 
@@ -150,7 +188,7 @@ function UIMenuListItem:Draw()
 		self.RightArrow:Colour(163, 159, 148, 255)
 	end
 
-	local Text = tostring(self.Items[self._Index])
+	local Text = (type(self.Items[self._Index]) == "table") and tostring(self.Items[self._Index].Name) or tostring(self.Items[self._Index])
 	local Offset = MeasureStringWidth(Text, 0, 0.35)
 
 	self.ItemText:Text(Text)

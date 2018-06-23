@@ -54,10 +54,10 @@ function MenuPool:ResetCursorOnOpen(bool)
 	end
 end
 
-function MenuPool:FormatDescriptions(bool)
+function MenuPool:MultilineFormats(bool)
 	if bool ~= nil then
 		for _, Menu in pairs(self.Menus) do
-			Menu.Settings.FormatDescriptions = tobool(bool)
+			Menu.Settings.MultilineFormats = tobool(bool)
 		end
 	end
 end
@@ -94,6 +94,14 @@ function MenuPool:DisableInstructionalButtons(bool)
 			Menu.Settings.InstructionalButtons = tobool(bool)
 		end
 	end
+end
+
+function MenuPool:MouseControlsEnabled(bool)
+    if bool ~= nil then
+        for _, Menu in pairs(self.Menus) do
+            Menu.Settings.MouseControlsEnabled = tobool(bool)
+        end
+    end
 end
 
 function MenuPool:RefreshIndex()
@@ -165,4 +173,12 @@ function MenuPool:SetBannerRectangle(Rectangle)
 			Menu:SetBannerRectangle(Rectangle)
 		end
 	end
+end
+
+function MenuPool:TotalItemsPerPage(Value)
+    if tonumber(Value) then
+        for _, Menu in pairs(self.Menus) do
+            Menu.Pagination.Total = Value - 1
+        end
+    end
 end

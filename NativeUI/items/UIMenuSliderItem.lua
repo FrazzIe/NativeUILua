@@ -31,9 +31,9 @@ end
 
 function UIMenuSliderItem:Position(Y)
 	if tonumber(Y) then
-		self.Background:Position(250 + self.Base._Offset.X, Y + 158.5 + self.Base._Offset.Y)
-		self.Slider:Position(250 + self.Base._Offset.X, Y + 158.5 + self.Base._Offset.Y)
-		self.Divider:Position(323.5 + self.Base._Offset.X, Y + 153 + self.Base._Offset.Y)
+		self.Background:Position(250 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, Y + 158.5 + self.Base._Offset.Y)
+		self.Slider:Position(250 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, Y + 158.5 + self.Base._Offset.Y)
+		self.Divider:Position(323.5 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, Y + 153 + self.Base._Offset.Y)
 		self.LeftArrow:Position(235 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, 155.5 + Y + self.Base._Offset.Y)
 		self.RightArrow:Position(400 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, 155.5 + Y + self.Base._Offset.Y)
 		self.Base:Position(Y)
@@ -110,7 +110,7 @@ end
 function UIMenuSliderItem:ItemToIndex(Item)
 	for i = 1, #self.Items do
 		if type(Item) == type(self.Items[i]) and Item == self.Items[i] then
-			return self.Items[i]
+			return i
 		end
 	end
 end
@@ -154,7 +154,7 @@ function UIMenuSliderItem:Draw()
 	
 	local Offset = ((self.Background.Width - self.Slider.Width)/(#self.Items - 1)) * (self._Index-1)
 
-	self.Slider:Position(250 + self.Base._Offset.X + Offset, self.Slider.Y)
+	self.Slider:Position(250 + self.Base._Offset.X + Offset + self.Base.ParentMenu.WidthOffset, self.Slider.Y)
 
 	if self:Selected() then
 		self.LeftArrow:Draw()

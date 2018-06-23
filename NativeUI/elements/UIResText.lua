@@ -75,12 +75,13 @@ end
 function MeasureStringWidthNoConvert(str, font, scale)
     BeginTextCommandWidth("STRING")
     AddLongString(str)
-    return EndTextCommandGetWidth(font) * scale
+    SetTextFont(font or 0)
+    SetTextScale(1.0, scale or 0)
+    return EndTextCommandGetWidth(true)
 end
 
 function MeasureStringWidth(str, font, scale)
-    local W, H = GetResolution()
-    return MeasureStringWidthNoConvert(str, font, scale) * ((W >= 1920) and W or 1920)
+    return MeasureStringWidthNoConvert(str, font, scale) * 1920
 end
 
 function UIResText.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)

@@ -20,6 +20,7 @@ function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
 		Extra = {},
 		Description = {},
 		Items = {},
+		Windows = {},
 		Children = {},
 		Controls = {},
 		ParentMenu = nil,
@@ -41,7 +42,7 @@ function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
 		OnMenuClosed = function(menu) end,
 		Settings = {
 			InstructionalButtons = true,
-			FormatDescriptions = true,
+			MultilineFormats = true,
 			ScaleWithSafezone = true,
 			ResetCursorOnOpen = true,
 			MouseControlsEnabled = true,
@@ -61,6 +62,8 @@ function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
 	if Subtitle ~= "" and Subtitle ~= nil then
 		_UIMenu.Subtitle.Rectangle = UIResRectangle.New(0 + _UIMenu.Position.X, 107 + _UIMenu.Position.Y, 431, 37, 0, 0, 0, 255)
 		_UIMenu.Subtitle.Text = UIResText.New(Subtitle, 8 + _UIMenu.Position.X, 110 + _UIMenu.Position.Y, 0.35, 245, 245, 245, 255, 0)
+		_UIMenu.Subtitle.BackupText = Subtitle
+		_UIMenu.Subtitle.Formatted = false
 		if string.starts(Subtitle, "~") then
 			_UIMenu.PageCounter.PreText = string.sub(Subtitle, 1, 3)
 		end
@@ -204,10 +207,19 @@ function UIMenu:CurrentSelection(value)
 	end
 end
 
+function UIMenu:CalculateWindowHeight()
+	local Height = 0
+	for i = 1, #self.Windows do
+		Height = Height + self.Windows[i].Background:Size().Height
+	end
+	return Height
+end
+
 function UIMenu:RecaulculateDescriptionPosition()
-	self.Description.Bar:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y)
-	self.Description.Rectangle:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y)
-	self.Description.Text:Position(self.Position.X + 8, 155 - 37 + self.Subtitle.ExtraY + self.Position.Y)
+	local WindowHeight = self:CalculateWindowHeight()
+	self.Description.Bar:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
+	self.Description.Rectangle:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
+	self.Description.Text:Position(self.Position.X + 8, 155 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
 
 	self.Description.Bar:Size(431 + self.WidthOffset, 4)
 	self.Description.Rectangle:Size(431 + self.WidthOffset, 30)
@@ -220,6 +232,41 @@ function UIMenu:RecaulculateDescriptionPosition()
 	self.Description.Bar:Position(self.Position.X, 38 * count + self.Description.Bar:Position().Y)
 	self.Description.Rectangle:Position(self.Position.X, 38 * count + self.Description.Rectangle:Position().Y)
 	self.Description.Text:Position(self.Position.X + 8, 38 * count + self.Description.Text:Position().Y)
+end
+
+function UIMenu:CaclulatePanelPosition(HasDescription)
+	local Height = self:CalculateWindowHeight() + 149 - 37 + self.Subtitle.ExtraY + self.Position.Y
+
+	local count = #self.Items
+	if count > self.Pagination.Total + 1 then
+		count = self.Pagination.Total + 2
+	end
+
+	if HasDescription then
+		Height = Height + self.Description.Rectangle:Size().Height + 5
+	end
+
+	return 38 * count + Height
+end
+
+function UIMenu:AddWindow(Window)
+	if Window() == "UIMenuWindow" then
+		Window:SetParentMenu(self)
+		Window:Offset(self.Position.X, self.Position.Y)
+		table.insert(self.Windows, Window)
+		self.ReDraw = true
+		self:RecaulculateDescriptionPosition()
+	end
+end
+
+function UIMenu:RemoveWindowAt(Index)
+	if tonumber(Index) then
+		if self.Windows[Index] then
+			table.remove(self.Windows, Index)
+			self.ReDraw = true
+			self:RecaulculateDescriptionPosition()
+		end
+	end
 end
 
 function UIMenu:AddItem(Item)
@@ -236,7 +283,7 @@ end
 
 function UIMenu:RemoveItemAt(Index)
 	if tonumber(Index) then
-		if self.Items(Index) then
+		if self.Items[Index] then
 			local SelectedItem = self:CurrentSelection()
 			if #self.Items > self.Pagination.Total and self.Pagination.Max == #self.Items - 1 then
 				self.Pagination.Min = self.Pagination.Min - 1
@@ -269,7 +316,7 @@ function UIMenu:Clear()
 	self:RecaulculateDescriptionPosition()
 end
 
-function UIMenu:FormatDescription(str)
+function UIMenu:MultilineFormat(str)
 	if tostring(str) then
 
 		local PixelPerLine = 425 + self.WidthOffset
@@ -293,19 +340,40 @@ function UIMenu:FormatDescription(str)
 end
 
 function UIMenu:DrawCalculations()
-	if #self.Items > self.Pagination.Total + 1 then
-		self.Background:Size(431 + self.WidthOffset, 38 * (self.Pagination.Total + 1))
-	else
-		self.Background:Size(431 + self.WidthOffset, 38 * #self.Items)
+	local WindowHeight = self:CalculateWindowHeight()
+
+	if self.Settings.MultilineFormats then
+		if self.Subtitle.Rectangle and not self.Subtitle.Formatted then
+			self.Subtitle.Formatted = true
+			self.Subtitle.Text:Text(self:MultilineFormat(self.Subtitle.Text:Text()))
+
+			local Linecount = #string.split(self.Subtitle.Text:Text(), "\n")
+			self.Subtitle.ExtraY = ((Linecount == 1) and 37 or ((Linecount + 1) * 22))
+			self.Subtitle.Rectangle:Size(431 + self.WidthOffset, self.Subtitle.ExtraY)
+		end
+	elseif self.Subtitle.Formatted then
+		self.Subtitle.Formatted = false
+		self.Subtitle.ExtraY = 37
+		self.Subtitle.Rectangle:Size(431 + self.WidthOffset, self.Subtitle.ExtraY)
+		self.Subtitle.Text:Text(self.Subtitle.BackupText)
 	end
+
+    if #self.Items > self.Pagination.Total + 1 then
+        self.Background:Size(431 + self.WidthOffset, (38 * (self.Pagination.Total + 1)) + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0))
+    else
+        self.Background:Size(431 + self.WidthOffset, (38 * #self.Items) + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0))
+    end
 
 	self.Extra.Up:Size(431 + self.WidthOffset, 18)
 	self.Extra.Down:Size(431 + self.WidthOffset, 18)
 
+	self.Extra.Up:Position(self.Position.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+	self.Extra.Down:Position(self.Position.X, 144 + 18 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+
 	if self.WidthOffset > 0 then
-		self.ArrowSprite:Position(190 + self.Position.X + (self.WidthOffset / 2), 147 + 37 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY)
+		self.ArrowSprite:Position(190 + self.Position.X + (self.WidthOffset / 2), WindowHeight + 147 + 37 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY)
 	else
-		self.ArrowSprite:Position(190 + self.Position.X + self.WidthOffset, 147 + 37 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY)
+		self.ArrowSprite:Position(190 + self.Position.X + self.WidthOffset, WindowHeight + 147 + 37 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY)
 	end
 
 	self.ReDraw = false
@@ -314,13 +382,14 @@ function UIMenu:DrawCalculations()
 		self:RecaulculateDescriptionPosition()
 
 		local description = self.Items[self:CurrentSelection()]:Description()
-		if self.Settings.FormatDescriptions then
-			self.Description.Text:Text(self:FormatDescription(description))
+		if self.Settings.MultilineFormats then
+			self.Description.Text:Text(self:MultilineFormat(description))
 		else
 			self.Description.Text:Text(description)
 		end
 
-		self.Description.Rectangle:Size(431 + self.WidthOffset, (#string.split(self.Description.Text:Text(), "\n") * 25) + 15)
+		local Linecount = #string.split(self.Description.Text:Text(), "\n")
+		self.Description.Rectangle:Size(431 + self.WidthOffset, ((Linecount == 1) and 37 or ((Linecount + 1) * 22)))
 	end
 end
 
@@ -370,7 +439,7 @@ function UIMenu:ProcessControl()
 					self:GoUp()
 				end
 				self:UpdateScaleform()
-				Citizen.Wait(100)
+				Citizen.Wait(175)
 				while IsDisabledControlPressed(0, 172) or IsDisabledControlPressed(1, 172) or IsDisabledControlPressed(2, 172) or IsDisabledControlPressed(0, 241) or IsDisabledControlPressed(1, 241) or IsDisabledControlPressed(2, 241) or IsDisabledControlPressed(2, 241) do
 					if #self.Items > self.Pagination.Total + 1 then
 						self:GoUpOverflow()
@@ -378,7 +447,7 @@ function UIMenu:ProcessControl()
 						self:GoUp()
 					end
 					self:UpdateScaleform()
-					Citizen.Wait(100)
+					Citizen.Wait(125)
 				end
 				self.UpPressed = false
 			end)
@@ -395,7 +464,7 @@ function UIMenu:ProcessControl()
 					self:GoDown()
 				end
 				self:UpdateScaleform()
-				Citizen.Wait(100)
+				Citizen.Wait(175)
 				while IsDisabledControlPressed(0, 173) or IsDisabledControlPressed(1, 173) or IsDisabledControlPressed(2, 173) or IsDisabledControlPressed(0, 242) or IsDisabledControlPressed(1, 242) or IsDisabledControlPressed(2, 242) do
 					if #self.Items > self.Pagination.Total + 1 then
 						self:GoDownOverflow()
@@ -403,7 +472,7 @@ function UIMenu:ProcessControl()
 						self:GoDown()
 					end
 					self:UpdateScaleform()
-					Citizen.Wait(100)
+					Citizen.Wait(125)
 				end
 				self.DownPressed = false
 			end)
@@ -415,10 +484,10 @@ function UIMenu:ProcessControl()
 			Citizen.CreateThread(function()
 				self.LeftPressed = true
 				self:GoLeft()
-				Citizen.Wait(150)
+				Citizen.Wait(175)
 				while IsDisabledControlPressed(0, 174) or IsDisabledControlPressed(1, 174) or IsDisabledControlPressed(2, 174) do
 					self:GoLeft()
-					Citizen.Wait(100)
+					Citizen.Wait(125)
 				end
 				self.LeftPressed = false
 			end)
@@ -430,10 +499,10 @@ function UIMenu:ProcessControl()
 			Citizen.CreateThread(function()
 				self.RightPressed = true
 				self:GoRight()
-				Citizen.Wait(150)
+				Citizen.Wait(175)
 				while IsDisabledControlPressed(0, 175) or IsDisabledControlPressed(1, 175) or IsDisabledControlPressed(2, 175) do
 					self:GoRight()
-					Citizen.Wait(100)
+					Citizen.Wait(125)
 				end
 				self.RightPressed = false
 			end)
@@ -675,6 +744,22 @@ function UIMenu:Draw()
 		self.Subtitle.Text:Draw()
 	end
 
+	if #self.Items ~= 0 or #self.Windows ~= 0 then
+		self.Background:Draw()
+	end
+
+	if #self.Windows ~= 0 then
+		local WindowOffset = 0
+		for index = 1, #self.Windows do
+			if self.Windows[index - 1] then 
+				WindowOffset = WindowOffset + self.Windows[index - 1].Background:Size().Height 
+			end
+			local Window = self.Windows[index]
+			Window:Position(WindowOffset + self.Subtitle.ExtraY - 37)
+			Window:Draw()
+		end
+	end
+
 	if #self.Items == 0 then
 		if self.Settings.ScaleWithSafezone then
 			ScreenDrawPositionEnd()
@@ -682,21 +767,35 @@ function UIMenu:Draw()
 		return
 	end
 
-	self.Background:Draw()
+	local CurrentSelection = self:CurrentSelection()
+	self.Items[CurrentSelection]:Selected(true)
 
-	self.Items[self:CurrentSelection()]:Selected(true)
-
-	if self.Items[self:CurrentSelection()]:Description() ~= "" then
+	if self.Items[CurrentSelection]:Description() ~= "" then
 		self.Description.Bar:Draw()
 		self.Description.Rectangle:Draw()
 		self.Description.Text:Draw()
 	end
 
+	if self.Items[CurrentSelection].Panels ~= nil then
+		if #self.Items[CurrentSelection].Panels ~= 0 then
+			local PanelOffset = self:CaclulatePanelPosition(self.Items[CurrentSelection]:Description() ~= "")
+			for index = 1, #self.Items[CurrentSelection].Panels do
+				if self.Items[CurrentSelection].Panels[index - 1] then 
+					PanelOffset = PanelOffset + self.Items[CurrentSelection].Panels[index - 1].Background:Size().Height + 5
+				end
+				self.Items[CurrentSelection].Panels[index]:Position(PanelOffset)
+				self.Items[CurrentSelection].Panels[index]:Draw()
+			end
+		end
+	end
+
+	local WindowHeight = self:CalculateWindowHeight()
+
 	if #self.Items <= self.Pagination.Total + 1 then
 		local count = 0
 		for index = 1, #self.Items do
 			Item = self.Items[index]
-			Item:Position(count * 38 - 37 + self.Subtitle.ExtraY)
+			Item:Position(count * 38 - 37 + self.Subtitle.ExtraY + WindowHeight)
 			Item:Draw()
 			count = count + 1
 		end
@@ -705,7 +804,7 @@ function UIMenu:Draw()
 		for index = self.Pagination.Min + 1, self.Pagination.Max, 1 do
 			if self.Items[index] then
 				Item = self.Items[index]				
-				Item:Position(count * 38 - 37 + self.Subtitle.ExtraY)
+				Item:Position(count * 38 - 37 + self.Subtitle.ExtraY + WindowHeight)
 				Item:Draw()
 				count = count + 1
 			end
@@ -716,7 +815,7 @@ function UIMenu:Draw()
 		self.ArrowSprite:Draw()
 
 		if self.PageCounter.Text ~= nil then
-			local Caption = self.PageCounter.PreText .. self:CurrentSelection() .. " / " .. #self.Items
+			local Caption = self.PageCounter.PreText .. CurrentSelection .. " / " .. #self.Items
 			self.PageCounter.Text:Text(Caption)
 			self.PageCounter.Text:Draw()
 		end
@@ -744,6 +843,7 @@ function UIMenu:ProcessMouse()
 	end
 
     local SafeZone = {X = 0, Y = 0}
+    local WindowHeight = self:CalculateWindowHeight()
     if self.Settings.ScaleWithSafezone then
 	   SafeZone = GetSafeZoneBounds()
     end
@@ -768,7 +868,7 @@ function UIMenu:ProcessMouse()
 	end
 
 	for i = self.Pagination.Min + 1, Limit, 1 do
-		local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + (Counter * 38) + SafeZone.Y
+		local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + (Counter * 38) + SafeZone.Y + WindowHeight
 		local Width, Height = 431 + self.WidthOffset, 38
 		local Item = self.Items[i]
 		local Type, SubType = Item()
@@ -815,7 +915,7 @@ function UIMenu:ProcessMouse()
 						elseif not Item:Enabled() and Item:Selected() then
 							PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
 						end
-						Citizen.Wait(100)
+						Citizen.Wait(175)
 						while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_X, _Y, _Width, _Height) do
 							if Item:Selected() and Item:Enabled() then
 								if SubType == "UIMenuListItem" then
@@ -842,7 +942,7 @@ function UIMenu:ProcessMouse()
 							elseif not Item:Enabled() and Item:Selected() then
 								PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
 							end
-							Citizen.Wait(100)						
+							Citizen.Wait(125)						
 						end
 						self.Controls.MousePressed = false
 					end)
@@ -854,7 +954,7 @@ function UIMenu:ProcessMouse()
 		Counter = Counter + 1
 	end
 
-	local ExtraX, ExtraY = self.Position.X  + SafeZone.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY  + SafeZone.Y
+	local ExtraX, ExtraY = self.Position.X  + SafeZone.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY + SafeZone.Y + WindowHeight
 
 	if #self.Items <= self.Pagination.Total + 1 then return end
 
@@ -870,14 +970,14 @@ function UIMenu:ProcessMouse()
 					else
 						self:GoUp()
 					end
-					Citizen.Wait(100)
+					Citizen.Wait(175)
 					while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_ExtraX, _ExtraY, 431 + self.WidthOffset, 18) do
 						if #self.Items > self.Pagination.Total + 1 then
 							self:GoUpOverflow()
 						else
 							self:GoUp()
 						end
-						Citizen.Wait(100)
+						Citizen.Wait(125)
 					end
 					self.Controls.MousePressed = false				
 				end)
@@ -899,14 +999,14 @@ function UIMenu:ProcessMouse()
 					else
 						self:GoDown()
 					end
-					Citizen.Wait(100)
+					Citizen.Wait(175)
 					while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_ExtraX, _ExtraY + 18, 431 + self.WidthOffset, 18) do
 						if #self.Items > self.Pagination.Total + 1 then
 							self:GoDownOverflow()
 						else
 							self:GoDown()
 						end
-						Citizen.Wait(100)
+						Citizen.Wait(125)
 					end
 					self.Controls.MousePressed = false				
 				end)
@@ -919,7 +1019,7 @@ end
 
 function UIMenu:AddInstructionButton(button)
 	if type(button) == "table" and #button == 2 then
-		table.insert(self.InstructionalButtons)
+		table.insert(self.InstructionalButtons, button)
 	end
 end
 

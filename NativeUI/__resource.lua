@@ -1,7 +1,7 @@
 resource_manifest_version '05cfa83c-a124-4cfa-a768-c24a5811d8f9'
 
 --[[
-All items unpacked
+--All items unpacked
 
 client_scripts {
     "Utils.lua",
@@ -16,11 +16,16 @@ client_scripts {
     "items/UIMenuListItem.lua",
     "items/UIMenuSliderItem.lua",
     "items/UIMenuColouredItem.lua",
+    "windows/UIMenuHeritageWindow.lua",
+    "panels/UIMenuGridPanel.lua",
+    "panels/UIMenuColourPanel.lua",
+    "panels/UIMenuPercentagePanel.lua",
     "UIMenu.lua",
     "MenuPool.lua",
+    "MenuExample.lua",
 }
 
-All items packed
+--All items packed
 --]]
 
 client_script "NativeUI.lua"

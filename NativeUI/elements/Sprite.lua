@@ -35,14 +35,14 @@ function Sprite:Size(Width, Height)
 end
 
 function Sprite:Colour(R, G, B, A)
-	if tonumber(R) and tonumber(G) and tonumber(B) and tonumber(A) then
-		self._Colour.R = tonumber(R)
-		self._Colour.B = tonumber(B)
-		self._Colour.G = tonumber(G)
-		self._Colour.A = tonumber(A)
-	else
-		return self._Colour
-	end
+    if tonumber(R) or tonumber(G) or tonumber(B) or tonumber(A) then
+        self._Colour.R = tonumber(R) or 255
+        self._Colour.B = tonumber(B) or 255
+        self._Colour.G = tonumber(G) or 255
+        self._Colour.A = tonumber(A) or 255
+    else
+    	return self._Colour
+    end
 end
 
 function Sprite:Draw()

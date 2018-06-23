@@ -10,6 +10,7 @@ function UIMenuColouredItem.New(Text, Description, MainColour, HighlightColour)
 		Rectangle = UIResRectangle.New(0, 0, 431, 38, MainColour.R, MainColour.G, MainColour.B, MainColour.A),
 		MainColour = MainColour,
 		HighlightColour = HighlightColour,
+		Activated = function(menu, item) end,
 	}
 	_UIMenuColouredItem.Base.SelectedSprite:Colour(HighlightColour.R, HighlightColour.G, HighlightColour.B, HighlightColour.A)
 	return setmetatable(_UIMenuColouredItem, UIMenuColouredItem)

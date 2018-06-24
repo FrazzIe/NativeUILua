@@ -14,6 +14,7 @@ function UIMenuColourPanel.New(Title, Colours)
 			Items = Colours,
 			Title = Title or "Title",
 			Enabled = true,
+			Value = 1,
 		},
 		Background = Sprite.New("commonmenu", "gradient_bgd", 0, 0, 431, 112),
 		Bar = {},
@@ -71,7 +72,7 @@ function UIMenuColourPanel:Position(Y) -- required
     end
 end
 
-function UIMenuColourPanel:CurrentSelection(value)
+function UIMenuColourPanel:CurrentSelection(value, PreventUpdate)
     if tonumber(value) then
         if #self.Data.Items == 0 then
             self.Data.Index = 0
@@ -87,7 +88,7 @@ function UIMenuColourPanel:CurrentSelection(value)
             self.Data.Pagination.Max = self:CurrentSelection() + (self.Data.Pagination.Total + 1)
         end
 
-        self:UpdateSelection()
+        self:UpdateSelection(PreventUpdate)
     else
         if #self.Data.Items == 0 then
             return 1
@@ -123,17 +124,21 @@ function UIMenuColourPanel:UpdateParent(Colour)
 			self.ParentItem.Base.ParentMenu.OnListChange(self.ParentItem.Base.ParentMenu, self.ParentItem, self.ParentItem._Index)
 			self.ParentItem.OnListChanged(self.ParentItem.Base.ParentMenu, self.ParentItem, self.ParentItem._Index)		
 		end
+	elseif ParentType == "UIMenuItem" then
+		self.ParentItem.ActivatedPanel(self.ParentItem.ParentMenu, self.ParentItem, self, Colour)
 	end
 end
 
-function UIMenuColourPanel:UpdateSelection()
-	local CurrentSelection = self:CurrentSelection()
-	self:UpdateParent(CurrentSelection)
-	self.SelectedRectangle:Position(15 + (44.5 * ((CurrentSelection - self.Data.Pagination.Min) - 1)) + self.ParentItem:Offset().X, self.SelectedRectangle.Y)
-	for Index = 1, 9 do
-		self.Bar[Index]:Colour(table.unpack(self.Data.Items[self.Data.Pagination.Min + Index]))
-	end
-	self.Text:Text(self.Data.Title.." ("..CurrentSelection.." of "..#self.Data.Items..")")
+function UIMenuColourPanel:UpdateSelection(PreventUpdate)
+    local CurrentSelection = self:CurrentSelection()
+    if not PreventUpdate then
+        self:UpdateParent(CurrentSelection)
+    end
+    self.SelectedRectangle:Position(15 + (44.5 * ((CurrentSelection - self.Data.Pagination.Min) - 1)) + self.ParentItem:Offset().X, self.SelectedRectangle.Y)
+    for Index = 1, 9 do
+        self.Bar[Index]:Colour(table.unpack(self.Data.Items[self.Data.Pagination.Min + Index]))
+    end
+    self.Text:Text(self.Data.Title.." ("..CurrentSelection.." of "..#self.Data.Items..")")
 end
 
 function UIMenuColourPanel:Functions()
@@ -206,17 +211,18 @@ function UIMenuColourPanel:Functions()
 	end
 end
 
-function UIMenuGridPanel:Draw() -- required
+function UIMenuColourPanel:Draw() -- required
     if self.Data.Enabled then
-        self.Background:Size(431 + self.ParentItem:SetParentMenu().WidthOffset, 275)
+        self.Background:Size(431 + self.ParentItem:SetParentMenu().WidthOffset, 112)
 
         self.Background:Draw()
-        self.Grid:Draw()
-        self.Circle:Draw()
-        self.Text.Top:Draw()
-        self.Text.Left:Draw()
-        self.Text.Right:Draw()
-        self.Text.Bottom:Draw()
+        self.LeftArrow:Draw()
+        self.RightArrow:Draw()
+        self.Text:Draw()
+        self.SelectedRectangle:Draw()
+        for Index = 1, #self.Bar do
+            self.Bar[Index]:Draw()
+        end
         self:Functions()
     end
 end

@@ -53,7 +53,11 @@ end
 function UIMenuPercentagePanel:Percentage(Value)
 	if tonumber(Value) then
 		local Percent = ((Value < 0.0) and 0.0) or ((Value > 1.0) and 1.0 or Value)
+		self.Data.Value = Percent
 		self.ActiveBar:Size(self.BackgroundBar.Width * Percent, self.ActiveBar.Height)
+	else
+		local Progress = (math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X) - self.ActiveBar.X
+		return math.round(((Progress >= 0 and Progress <= 413) and Progress or ((Progress < 0) and 0 or 413))/self.BackgroundBar.Width, 2)
 	end
 end
 
@@ -79,6 +83,8 @@ function UIMenuPercentagePanel:UpdateParent(Percentage)
 			self.ParentItem.Base.ParentMenu.OnListChange(self.ParentItem.Base.ParentMenu, self.ParentItem, self.ParentItem._Index)
 			self.ParentItem.OnListChanged(self.ParentItem.Base.ParentMenu, self.ParentItem, self.ParentItem._Index)		
 		end
+    elseif ParentType == "UIMenuItem" then
+        self.ParentItem.ActivatedPanel(self.ParentItem.ParentMenu, self.ParentItem, self, Percentage)
 	end
 end
 

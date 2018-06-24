@@ -20,17 +20,19 @@ function UIMenuItem.New(Text, Description)
 		_Enabled = true,
 		_Offset = {X = 0, Y = 0},
 		ParentMenu = nil,
-		Activated = function(menu, item) end
+		Panels = {},
+		Activated = function(menu, item) end,
+		ActivatedPanel = function(menu, item, panel, panelvalue) end,
 	}
 	return setmetatable(_UIMenuItem, UIMenuItem)
 end
 
 function UIMenuItem:SetParentMenu(Menu)
-	if Menu() == "UIMenu" then
-		self.ParentMenu = Menu
-	else
-		return self.ParentMenu
-	end
+    if Menu ~= nil and Menu() == "UIMenu" then
+        self.ParentMenu = Menu
+    else
+        return self.ParentMenu
+    end
 end
 
 function UIMenuItem:Selected(bool)
@@ -121,6 +123,41 @@ function UIMenuItem:Text(Text)
 	else
 		return self.Text:Text()
 	end
+end
+
+function UIMenuItem:AddPanel(Panel)
+	if Panel() == "UIMenuPanel" then
+		table.insert(self.Panels, Panel)
+		Panel:SetParentItem(self)
+	end
+end
+
+function UIMenuItem:RemovePanelAt(Index)
+	if tonumber(Index) then
+		if self.Panels[Index] then
+			table.remove(self.Panels, tonumber(Index))
+		end
+	end
+end
+
+function UIMenuItem:FindPanelIndex(Panel)
+	if Panel() == "UIMenuPanel" then
+		for Index = 1, #self.Panels do
+			if self.Panels[Index] == Panel then
+				return Index
+			end
+		end
+	end
+	return nil
+end
+
+function UIMenuItem:FindPanelItem()
+	for Index = #self.Items, 1, -1 do
+		if self.Items[Index].Panel then
+			return Index
+		end
+	end
+	return nil
 end
 
 function UIMenuItem:Draw()

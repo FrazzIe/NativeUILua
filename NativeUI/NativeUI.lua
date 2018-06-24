@@ -3470,13 +3470,13 @@ function NativeUI.CreatePercentagePanel(MinText, MaxText)
 end
 
 function NativeUI.CreateSprite(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)
-    return UI.Sprite.New(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)
+    return Sprite.New(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)
 end
 
 function NativeUI.CreateRectangle(X, Y, Width, Height, R, G, B, A)
-    return UI.Rectangle.New(X, Y, Width, Height, R, G, B, A)
+    return UIResRectangle.New(X, Y, Width, Height, R, G, B, A)
 end
 
 function NativeUI.CreateText(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)
-    return UI.Text.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)
+    return UIResText.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)
 end

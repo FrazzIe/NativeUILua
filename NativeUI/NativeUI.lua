@@ -2360,21 +2360,37 @@ function UIMenu:InstructionalButtons(bool)
     end
 end
 
-function UIMenu:SetBannerSprite(Sprite)
+function UIMenu:SetBannerSprite(Sprite, IncludeChildren)
     if Sprite() == "Sprite" then
         self.Logo = Sprite
         self.Logo:Size(431 + self.WidthOffset, 107)
         self.Logo:Position(self.Position.X, self.Position.Y)
         self.Banner = nil
+        if IncludeChildren then
+            for Item, Menu in pairs(self.Children) do
+                Menu.Logo = Sprite
+                Menu.Logo:Size(431 + self.WidthOffset, 107)
+                Menu.Logo:Position(self.Position.X, self.Position.Y)
+                Menu.Banner = nil
+            end
+        end
     end
 end
 
-function UIMenu:SetBannerRectangle(Rectangle)
+function UIMenu:SetBannerRectangle(Rectangle, IncludeChildren)
     if Rectangle() == "Rectangle" then
         self.Banner = Rectangle
         self.Banner:Size(431 + self.WidthOffset, 107)
         self.Banner:Position(self.Position.X, self.Position.Y)
         self.Logo = nil
+        if IncludeChildren then
+            for Item, Menu in pairs(self.Children) do
+                Menu.Banner = Rectangle
+                Menu.Banner:Size(431 + self.WidthOffset, 107)
+                Menu:Position(self.Position.X, self.Position.Y)
+                Menu.Logo = nil
+            end
+        end
     end
 end
 

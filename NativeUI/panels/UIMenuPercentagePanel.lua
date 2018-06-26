@@ -53,7 +53,6 @@ end
 function UIMenuPercentagePanel:Percentage(Value)
 	if tonumber(Value) then
 		local Percent = ((Value < 0.0) and 0.0) or ((Value > 1.0) and 1.0 or Value)
-		self.Data.Value = Percent
 		self.ActiveBar:Size(self.BackgroundBar.Width * Percent, self.ActiveBar.Height)
 	else
 		local Progress = (math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X) - self.ActiveBar.X

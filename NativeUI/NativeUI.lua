@@ -328,18 +328,14 @@ Colours = {
 function GetResolution()
     local W, H = GetActiveScreenResolution()
     if (W/H) > 3.5 then
-    return GetScreenResolution()
+        return GetScreenResolution()
     else
-    return W, H
+        return W, H
     end
 end
 
 function FormatXWYH(Value, Value2)
-    local W, H = GetScreenResolution()
-    local AW, AH = GetResolution()
-    local XW = Value/W - ((Value / W) - (Value / ((AW >= 1920) and AW or 1920)))
-    local YH = Value2/H - ((Value2 / H) - (Value2 / ((AH >= 1080) and AH or 1080)))
-    return XW, YH
+    return Value/1920, Value2/1080
 end
 
 function math.round(num, numDecimalPlaces)

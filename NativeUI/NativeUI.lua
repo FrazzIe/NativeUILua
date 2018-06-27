@@ -933,8 +933,8 @@ function UIMenuItem:FindPanelItem()
 end
 
 function UIMenuItem:Draw()
-    self.Rectangle:Size(431 + self.ParentMenu.WidthOffset, 38)
-    self.SelectedSprite:Size(431 + self.ParentMenu.WidthOffset, 38)
+    self.Rectangle:Size(431 + self.ParentMenu.WidthOffset, self.Rectangle.Height)
+    self.SelectedSprite:Size(431 + self.ParentMenu.WidthOffset, self.SelectedSprite.Height)
 
     if self._Hovered and not self._Selected then
         self.Rectangle:Draw()
@@ -2292,7 +2292,7 @@ function UIMenu:SetMenuWidthOffset(Offset)
     if tonumber(Offset) then
         self.WidthOffset = math.floor(tonumber(Offset))
         self.Logo:Size(431 + self.WidthOffset, 107)
-        self.Title:Position(((self.WidthOffset + 431)/2) + self.Position.X, 20 + self.Position.Y)
+        self.Title:Position((self.WidthOffset + self.Position.X + 431) / 2, 20 + self.Position.Y)
         if self.Subtitle.Rectangle ~= nil then
             self.Subtitle.Rectangle:Size(431 + self.WidthOffset + 100, 37)            
             self.PageCounter.Text:Position(425 + self.Position.X + self.WidthOffset, 110 + self.Position.Y)
@@ -2427,6 +2427,25 @@ function UIMenu:CalculateWindowHeight()
     return Height
 end
 
+function UIMenu:CalculateItemHeightOffset(Item)
+    if Item.Base then
+        return Item.Base.Rectangle.Height
+    else
+        return Item.Rectangle.Height
+    end
+end
+
+function UIMenu:CalculateItemHeight()
+    local ItemOffset = 0 + self.Subtitle.ExtraY - 37 + self:CalculateWindowHeight()
+    for i = self.Pagination.Min + 1, self.Pagination.Max do
+        local Item = self.Items[i]
+        if Item ~= nil then
+            ItemOffset = ItemOffset + self:CalculateItemHeightOffset(Item)
+        end
+    end
+    return ItemOffset
+end
+
 function UIMenu:RecaulculateDescriptionPosition()
     local WindowHeight = self:CalculateWindowHeight()
     self.Description.Bar:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
@@ -2436,14 +2455,9 @@ function UIMenu:RecaulculateDescriptionPosition()
     self.Description.Bar:Size(431 + self.WidthOffset, 4)
     self.Description.Rectangle:Size(431 + self.WidthOffset, 30)
 
-    local count = #self.Items
-    if count > self.Pagination.Total + 1 then
-        count = self.Pagination.Total + 2
-    end
-
-    self.Description.Bar:Position(self.Position.X, 38 * count + self.Description.Bar:Position().Y)
-    self.Description.Rectangle:Position(self.Position.X, 38 * count + self.Description.Rectangle:Position().Y)
-    self.Description.Text:Position(self.Position.X + 8, 38 * count + self.Description.Text:Position().Y)
+    self.Description.Bar:Position(self.Position.X, self:CalculateItemHeight() + ((#self.Items > (self.Pagination.Total + 1)) and 37 or 0) + self.Description.Bar:Position().Y)
+    self.Description.Rectangle:Position(self.Position.X, self:CalculateItemHeight() + ((#self.Items > (self.Pagination.Total + 1)) and 37 or 0) + self.Description.Rectangle:Position().Y)
+    self.Description.Text:Position(self.Position.X + 8, self:CalculateItemHeight() + ((#self.Items > (self.Pagination.Total + 1)) and 37 or 0) + self.Description.Text:Position().Y)
 end
 
 function UIMenu:CaclulatePanelPosition(HasDescription)
@@ -2458,7 +2472,7 @@ function UIMenu:CaclulatePanelPosition(HasDescription)
         Height = Height + self.Description.Rectangle:Size().Height + 5
     end
 
-    return 38 * count + Height
+    return self:CalculateItemHeight() + ((#self.Items > (self.Pagination.Total + 1)) and 37 or 0) + Height
 end
 
 function UIMenu:AddWindow(Window)
@@ -2570,22 +2584,18 @@ function UIMenu:DrawCalculations()
         self.Subtitle.Text:Text(self.Subtitle.BackupText)
     end
 
-    if #self.Items > self.Pagination.Total + 1 then
-        self.Background:Size(431 + self.WidthOffset, (38 * (self.Pagination.Total + 1)) + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0))
-    else
-        self.Background:Size(431 + self.WidthOffset, (38 * #self.Items) + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0))
-    end
+    self.Background:Size(431 + self.WidthOffset, self:CalculateItemHeight() + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0))
 
     self.Extra.Up:Size(431 + self.WidthOffset, 18)
     self.Extra.Down:Size(431 + self.WidthOffset, 18)
 
-    self.Extra.Up:Position(self.Position.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
-    self.Extra.Down:Position(self.Position.X, 144 + 18 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+    self.Extra.Up:Position(self.Position.X, 144 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+    self.Extra.Down:Position(self.Position.X, 144 + 18 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
 
     if self.WidthOffset > 0 then
-        self.ArrowSprite:Position(190 + self.Position.X + (self.WidthOffset / 2), WindowHeight + 147 + 37 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY)
+        self.ArrowSprite:Position(190 + self.Position.X + (self.WidthOffset / 2), 137 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
     else
-        self.ArrowSprite:Position(190 + self.Position.X + self.WidthOffset, WindowHeight + 147 + 37 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY)
+        self.ArrowSprite:Position(190 + self.Position.X + self.WidthOffset, 137 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
     end
 
     self.ReDraw = false
@@ -2871,7 +2881,7 @@ function UIMenu:SelectItem()
     elseif subtype == "UIMenuSliderItem" then
         PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
         self.OnSliderSelect(self, Item, Item._Index)
-        Item.OnSliderSelected(self, Item, Item._Index)
+        Item.OnSliderSelected(Item._Index)
     else
         PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
         self.OnItemSelect(self, Item, self:CurrentSelection())
@@ -3004,21 +3014,21 @@ function UIMenu:Draw()
     local WindowHeight = self:CalculateWindowHeight()
 
     if #self.Items <= self.Pagination.Total + 1 then
-        local count = 0
+        local ItemOffset = self.Subtitle.ExtraY - 37 + WindowHeight
         for index = 1, #self.Items do
             Item = self.Items[index]
-            Item:Position(count * 38 - 37 + self.Subtitle.ExtraY + WindowHeight)
+            Item:Position(ItemOffset)
             Item:Draw()
-            count = count + 1
+            ItemOffset = ItemOffset + self:CalculateItemHeightOffset(Item)
         end
     else
-        local count = 0
+        local ItemOffset = self.Subtitle.ExtraY - 37 + WindowHeight
         for index = self.Pagination.Min + 1, self.Pagination.Max, 1 do
             if self.Items[index] then
-                Item = self.Items[index]                
-                Item:Position(count * 38 - 37 + self.Subtitle.ExtraY + WindowHeight)
+                Item = self.Items[index]
+                Item:Position(ItemOffset)
                 Item:Draw()
-                count = count + 1
+                ItemOffset = ItemOffset + self:CalculateItemHeightOffset(Item)
             end
         end
 
@@ -3061,7 +3071,7 @@ function UIMenu:ProcessMouse()
     end
 
     local Limit = #self.Items
-    local Counter = 0
+    local ItemOffset = 0
 
     ShowCursorThisFrame()
 
@@ -3080,7 +3090,7 @@ function UIMenu:ProcessMouse()
     end
 
     for i = self.Pagination.Min + 1, Limit, 1 do
-        local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + (Counter * 38) + SafeZone.Y + WindowHeight
+        local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + ItemOffset + SafeZone.Y + WindowHeight
         local Width, Height = 431 + self.WidthOffset, 38
         local Item = self.Items[i]
         local Type, SubType = Item()
@@ -3163,10 +3173,10 @@ function UIMenu:ProcessMouse()
         else
             Item:Hovered(false)
         end
-        Counter = Counter + 1
+        ItemOffset = ItemOffset + self:CalculateItemHeightOffset(Item)
     end
 
-    local ExtraX, ExtraY = self.Position.X  + SafeZone.X, 144 + 38 * (self.Pagination.Total + 1) + self.Position.Y - 37 + self.Subtitle.ExtraY + SafeZone.Y + WindowHeight
+    local ExtraX, ExtraY = self.Position.X  + SafeZone.X, 144 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + SafeZone.Y + WindowHeight
 
     if #self.Items <= self.Pagination.Total + 1 then return end
 

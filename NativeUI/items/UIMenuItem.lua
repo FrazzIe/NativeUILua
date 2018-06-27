@@ -161,8 +161,8 @@ function UIMenuItem:FindPanelItem()
 end
 
 function UIMenuItem:Draw()
-	self.Rectangle:Size(431 + self.ParentMenu.WidthOffset, 38)
-	self.SelectedSprite:Size(431 + self.ParentMenu.WidthOffset, 38)
+	self.Rectangle:Size(431 + self.ParentMenu.WidthOffset, self.Rectangle.Height)
+	self.SelectedSprite:Size(431 + self.ParentMenu.WidthOffset, self.SelectedSprite.Height)
 
 	if self._Hovered and not self._Selected then
 		self.Rectangle:Draw()

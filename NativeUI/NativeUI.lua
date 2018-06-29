@@ -1739,7 +1739,6 @@ end
 
 function UIMenuGridPanel:UpdateParent(X, Y)
     local _, ParentType = self.ParentItem()
-    self.Data.Value = {X = X, Y = Y}
     if ParentType == "UIMenuListItem" then
         local PanelItemIndex = self.ParentItem:FindPanelItem()
         if PanelItemIndex then
@@ -2110,7 +2109,6 @@ end
 function UIMenuPercentagePanel:Percentage(Value)
     if tonumber(Value) then
         local Percent = ((Value < 0.0) and 0.0) or ((Value > 1.0) and 1.0 or Value)
-        self.Data.Value = Percent
         self.ActiveBar:Size(self.BackgroundBar.Width * Percent, self.ActiveBar.Height)
     else
         local Progress = (math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X) - self.ActiveBar.X
@@ -2292,7 +2290,7 @@ function UIMenu:SetMenuWidthOffset(Offset)
     if tonumber(Offset) then
         self.WidthOffset = math.floor(tonumber(Offset))
         self.Logo:Size(431 + self.WidthOffset, 107)
-        self.Title:Position((self.WidthOffset + self.Position.X + 431) / 2, 20 + self.Position.Y)
+        self.Title:Position(((self.WidthOffset + 431)/2) + self.Position.X, 20 + self.Position.Y)
         if self.Subtitle.Rectangle ~= nil then
             self.Subtitle.Rectangle:Size(431 + self.WidthOffset + 100, 37)            
             self.PageCounter.Text:Position(425 + self.Position.X + self.WidthOffset, 110 + self.Position.Y)
@@ -2584,7 +2582,7 @@ function UIMenu:DrawCalculations()
         self.Subtitle.Text:Text(self.Subtitle.BackupText)
     end
 
-    self.Background:Size(431 + self.WidthOffset, self:CalculateItemHeight() + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0))
+    self.Background:Size(431 + self.WidthOffset, self:CalculateItemHeight() + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 37))
 
     self.Extra.Up:Size(431 + self.WidthOffset, 18)
     self.Extra.Down:Size(431 + self.WidthOffset, 18)
@@ -2881,7 +2879,7 @@ function UIMenu:SelectItem()
     elseif subtype == "UIMenuSliderItem" then
         PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
         self.OnSliderSelect(self, Item, Item._Index)
-        Item.OnSliderSelected(Item._Index)
+        Item.OnSliderSelected(self, Item, Item._Index)
     else
         PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
         self.OnItemSelect(self, Item, self:CurrentSelection())

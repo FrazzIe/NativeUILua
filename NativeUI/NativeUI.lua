@@ -2434,7 +2434,7 @@ function UIMenu:CalculateItemHeightOffset(Item)
 end
 
 function UIMenu:CalculateItemHeight()
-    local ItemOffset = 0 + self.Subtitle.ExtraY - 37 + self:CalculateWindowHeight()
+    local ItemOffset = 0 + self.Subtitle.ExtraY - 37
     for i = self.Pagination.Min + 1, self.Pagination.Max do
         local Item = self.Items[i]
         if Item ~= nil then
@@ -2444,11 +2444,11 @@ function UIMenu:CalculateItemHeight()
     return ItemOffset
 end
 
-function UIMenu:RecaulculateDescriptionPosition()
+function UIMenu:RecalculateDescriptionPosition()
     local WindowHeight = self:CalculateWindowHeight()
-    self.Description.Bar:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
-    self.Description.Rectangle:Position(self.Position.X, 149 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
-    self.Description.Text:Position(self.Position.X + 8, 155 - 37 + self.Subtitle.ExtraY + self.Position.Y + WindowHeight)
+    self.Description.Bar:Position(self.Position.X, 149 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y + WindowHeight)
+    self.Description.Rectangle:Position(self.Position.X, 149 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y + WindowHeight)
+    self.Description.Text:Position(self.Position.X + 8, 155 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y + WindowHeight)
 
     self.Description.Bar:Size(431 + self.WidthOffset, 4)
     self.Description.Rectangle:Size(431 + self.WidthOffset, 30)
@@ -2459,12 +2459,7 @@ function UIMenu:RecaulculateDescriptionPosition()
 end
 
 function UIMenu:CaclulatePanelPosition(HasDescription)
-    local Height = self:CalculateWindowHeight() + 149 - 37 + self.Subtitle.ExtraY + self.Position.Y
-
-    local count = #self.Items
-    if count > self.Pagination.Total + 1 then
-        count = self.Pagination.Total + 2
-    end
+    local Height = self:CalculateWindowHeight() + 149 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y
 
     if HasDescription then
         Height = Height + self.Description.Rectangle:Size().Height + 5
@@ -2479,7 +2474,7 @@ function UIMenu:AddWindow(Window)
         Window:Offset(self.Position.X, self.Position.Y)
         table.insert(self.Windows, Window)
         self.ReDraw = true
-        self:RecaulculateDescriptionPosition()
+        self:RecalculateDescriptionPosition()
     end
 end
 
@@ -2488,7 +2483,7 @@ function UIMenu:RemoveWindowAt(Index)
         if self.Windows[Index] then
             table.remove(self.Windows, Index)
             self.ReDraw = true
-            self:RecaulculateDescriptionPosition()
+            self:RecalculateDescriptionPosition()
         end
     end
 end
@@ -2500,7 +2495,7 @@ function UIMenu:AddItem(Item)
         Item:Offset(self.Position.X, self.Position.Y)
         Item:Position((#self.Items * 25) - 37 + self.Subtitle.ExtraY)
         table.insert(self.Items, Item)
-        self:RecaulculateDescriptionPosition()
+        self:RecalculateDescriptionPosition()
         self:CurrentSelection(SelectedItem)
     end
 end
@@ -2514,7 +2509,7 @@ function UIMenu:RemoveItemAt(Index)
                 self.Pagination.Max = self.Pagination.Max + 1
             end
             table.remove(self.Items, tonumber(Index))
-            self:RecaulculateDescriptionPosition()
+            self:RecalculateDescriptionPosition()
             self:CurrentSelection(SelectedItem)
         end
     end
@@ -2537,7 +2532,7 @@ end
 function UIMenu:Clear()
     self.Items = {}
     self.ReDraw = true
-    self:RecaulculateDescriptionPosition()
+    self:RecalculateDescriptionPosition()
 end
 
 function UIMenu:MultilineFormat(str)
@@ -2599,7 +2594,7 @@ function UIMenu:DrawCalculations()
     self.ReDraw = false
 
     if #self.Items ~= 0 and self.Items[self:CurrentSelection()]:Description() ~= "" then
-        self:RecaulculateDescriptionPosition()
+        self:RecalculateDescriptionPosition()
 
         local description = self.Items[self:CurrentSelection()]:Description()
         if self.Settings.MultilineFormats then

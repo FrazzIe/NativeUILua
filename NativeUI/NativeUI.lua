@@ -2446,9 +2446,9 @@ end
 
 function UIMenu:RecalculateDescriptionPosition()
     local WindowHeight = self:CalculateWindowHeight()
-    self.Description.Bar:Position(self.Position.X, 149 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y + WindowHeight)
-    self.Description.Rectangle:Position(self.Position.X, 149 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y + WindowHeight)
-    self.Description.Text:Position(self.Position.X + 8, 155 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y + WindowHeight)
+    self.Description.Bar:Position(self.Position.X, 149 + self.Position.Y + WindowHeight)
+    self.Description.Rectangle:Position(self.Position.X, 149 + self.Position.Y + WindowHeight)
+    self.Description.Text:Position(self.Position.X + 8, 155 + self.Position.Y + WindowHeight)
 
     self.Description.Bar:Size(431 + self.WidthOffset, 4)
     self.Description.Rectangle:Size(431 + self.WidthOffset, 30)
@@ -2459,7 +2459,7 @@ function UIMenu:RecalculateDescriptionPosition()
 end
 
 function UIMenu:CaclulatePanelPosition(HasDescription)
-    local Height = self:CalculateWindowHeight() + 149 + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 0) + self.Position.Y
+    local Height = self:CalculateWindowHeight() + 149 + self.Position.Y
 
     if HasDescription then
         Height = Height + self.Description.Rectangle:Size().Height + 5
@@ -2577,18 +2577,18 @@ function UIMenu:DrawCalculations()
         self.Subtitle.Text:Text(self.Subtitle.BackupText)
     end
 
-    self.Background:Size(431 + self.WidthOffset, self:CalculateItemHeight() + WindowHeight + ((self.Subtitle.ExtraY > 0) and (self.Subtitle.ExtraY - 37) or 37))
+    self.Background:Size(431 + self.WidthOffset, self:CalculateItemHeight() + WindowHeight + ((self.Subtitle.ExtraY > 0) and 0 or 37))
 
     self.Extra.Up:Size(431 + self.WidthOffset, 18)
     self.Extra.Down:Size(431 + self.WidthOffset, 18)
 
-    self.Extra.Up:Position(self.Position.X, 144 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
-    self.Extra.Down:Position(self.Position.X, 144 + 18 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+    self.Extra.Up:Position(self.Position.X, 144 + self:CalculateItemHeight() + self.Position.Y + WindowHeight)
+    self.Extra.Down:Position(self.Position.X, 144 + 18 + self:CalculateItemHeight() + self.Position.Y + WindowHeight)
 
     if self.WidthOffset > 0 then
-        self.ArrowSprite:Position(190 + self.Position.X + (self.WidthOffset / 2), 137 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+        self.ArrowSprite:Position(190 + self.Position.X + (self.WidthOffset / 2), 137 + self:CalculateItemHeight() + self.Position.Y + WindowHeight)
     else
-        self.ArrowSprite:Position(190 + self.Position.X + self.WidthOffset, 137 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + WindowHeight)
+        self.ArrowSprite:Position(190 + self.Position.X + self.WidthOffset, 137 + self:CalculateItemHeight() + self.Position.Y + WindowHeight)
     end
 
     self.ReDraw = false
@@ -3169,7 +3169,7 @@ function UIMenu:ProcessMouse()
         ItemOffset = ItemOffset + self:CalculateItemHeightOffset(Item)
     end
 
-    local ExtraX, ExtraY = self.Position.X  + SafeZone.X, 144 + self:CalculateItemHeight() + self.Position.Y - 37 + self.Subtitle.ExtraY + SafeZone.Y + WindowHeight
+    local ExtraX, ExtraY = self.Position.X + SafeZone.X, 144 + self:CalculateItemHeight() + self.Position.Y + SafeZone.Y + WindowHeight
 
     if #self.Items <= self.Pagination.Total + 1 then return end
 

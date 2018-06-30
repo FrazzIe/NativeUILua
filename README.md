@@ -21,6 +21,8 @@ Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
 
 `NativeUI.CreateSliderItem(Text, Items, Index, Description, Divider)` create a UIMenuSliderItem
 
+`NativeUI.CreateProgressItem(Text, Items, Index, Description, Counter)`
+
 `NativeUI.CreateSprite(TxtDictionary, TxtName, X, Y, Width, Height, Heading, R, G, B, A)` create a Sprite
 
 `NativeUI.CreateRectangle(X, Y, Width, Height, R, G, B, A)` create a Rectangle

@@ -16,6 +16,7 @@ client_scripts {
     "items/UIMenuListItem.lua",
     "items/UIMenuSliderItem.lua",
     "items/UIMenuColouredItem.lua",
+    "items/UIMenuprogressItem.lua",
     "windows/UIMenuHeritageWindow.lua",
     "panels/UIMenuGridPanel.lua",
     "panels/UIMenuColourPanel.lua",

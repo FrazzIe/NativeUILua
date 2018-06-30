@@ -30,6 +30,10 @@ UIMenuColouredItem = setmetatable({}, UIMenuColouredItem)
 UIMenuColouredItem.__index = UIMenuColouredItem
 UIMenuColouredItem.__call = function() return "UIMenuItem", "UIMenuColouredItem" end
 
+UIMenuProgressItem = setmetatable({}, UIMenuProgressItem)
+UIMenuProgressItem.__index = UIMenuProgressItem
+UIMenuProgressItem.__call = function() return "UIMenuItem", "UIMenuProgressItem" end
+
 UIMenuHeritageWindow = setmetatable({}, UIMenuHeritageWindow)
 UIMenuHeritageWindow.__index = UIMenuHeritageWindow
 UIMenuHeritageWindow.__call = function() return "UIMenuWindow", "UIMenuHeritageWindow" end
@@ -102,222 +106,222 @@ BadgeColour = {
 }
 
 Colours = {
-    PureWhite = function() return {255, 255, 255, 255} end,
-    White = function() return {240, 240, 240, 255} end,
-    Black = function() return {0, 0, 0, 255} end,
-    Grey = function() return {155, 155, 155, 255} end,
-    GreyLight = function() return {205, 205, 205, 255} end,
-    GreyDark = function() return {77, 77, 77, 255} end,
-    Red = function() return {224, 50, 50, 255} end,
-    RedLight = function() return {240, 153, 153, 255} end,
-    RedDark = function() return {112, 25, 25, 255} end,
-    Blue = function() return {93, 182, 229, 255} end,
-    BlueLight = function() return {174, 219, 242, 255} end,
-    BlueDark = function() return {47, 92, 115, 255} end,
-    Yellow = function() return {240, 200, 80, 255} end,
-    YellowLight = function() return {254, 235, 169, 255} end,
-    YellowDark = function() return {126, 107, 41, 255} end,
-    Orange = function() return {255, 133, 85, 255} end,
-    OrangeLight = function() return {255, 194, 170, 255} end,
-    OrangeDark = function() return {127, 66, 42, 255} end,
-    Green = function() return {114, 204, 114, 255} end,
-    GreenLight = function() return {185, 230, 185, 255} end,
-    GreenDark = function() return {57, 102, 57, 255} end,
-    Purple = function() return {132, 102, 226, 255} end,
-    PurpleLight = function() return {192, 179, 239, 255} end,
-    PurpleDark = function() return {67, 57, 111, 255} end,
-    Pink = function() return {203, 54, 148, 255} end,
-    RadarHealth = function() return {53, 154, 71, 255} end,
-    RadarArmour = function() return {93, 182, 229, 255} end,
-    RadarDamage = function() return {235, 36, 39, 255} end,
-    NetPlayer1 = function() return {194, 80, 80, 255} end,
-    NetPlayer2 = function() return {156, 110, 175, 255} end,
-    NetPlayer3 = function() return {255, 123, 196, 255} end,
-    NetPlayer4 = function() return {247, 159, 123, 255} end,
-    NetPlayer5 = function() return {178, 144, 132, 255} end,
-    NetPlayer6 = function() return {141, 206, 167, 255} end,
-    NetPlayer7 = function() return {113, 169, 175, 255} end,
-    NetPlayer8 = function() return {211, 209, 231, 255} end,
-    NetPlayer9 = function() return {144, 127, 153, 255} end,
-    NetPlayer10 = function() return {106, 196, 191, 255} end,
-    NetPlayer11 = function() return {214, 196, 153, 255} end,
-    NetPlayer12 = function() return {234, 142, 80, 255} end,
-    NetPlayer13 = function() return {152, 203, 234, 255} end,
-    NetPlayer14 = function() return {178, 98, 135, 255} end,
-    NetPlayer15 = function() return {144, 142, 122, 255} end,
-    NetPlayer16 = function() return {166, 117, 94, 255} end,
-    NetPlayer17 = function() return {175, 168, 168, 255} end,
-    NetPlayer18 = function() return {232, 142, 155, 255} end,
-    NetPlayer19 = function() return {187, 214, 91, 255} end,
-    NetPlayer20 = function() return {12, 123, 86, 255} end,
-    NetPlayer21 = function() return {123, 196, 255, 255} end,
-    NetPlayer22 = function() return {171, 60, 230, 255} end,
-    NetPlayer23 = function() return {206, 169, 13, 255} end,
-    NetPlayer24 = function() return {71, 99, 173, 255} end,
-    NetPlayer25 = function() return {42, 166, 185, 255} end,
-    NetPlayer26 = function() return {186, 157, 125, 255} end,
-    NetPlayer27 = function() return {201, 225, 255, 255} end,
-    NetPlayer28 = function() return {240, 240, 150, 255} end,
-    NetPlayer29 = function() return {237, 140, 161, 255} end,
-    NetPlayer30 = function() return {249, 138, 138, 255} end,
-    NetPlayer31 = function() return {252, 239, 166, 255} end,
-    NetPlayer32 = function() return {240, 240, 240, 255} end,
-    SimpleBlipDefault = function() return {159, 201, 166, 255} end,
-    MenuBlue = function() return {140, 140, 140, 255} end,
-    MenuGreyLight = function() return {140, 140, 140, 255} end,
-    MenuBlueExtraDark = function() return {40, 40, 40, 255} end,
-    MenuYellow = function() return {240, 160, 0, 255} end,
-    MenuYellowDark = function() return {240, 160, 0, 255} end,
-    MenuGreen = function() return {240, 160, 0, 255} end,
-    MenuGrey = function() return {140, 140, 140, 255} end,
-    MenuGreyDark = function() return {60, 60, 60, 255} end,
-    MenuHighlight = function() return {30, 30, 30, 255} end,
-    MenuStandard = function() return {140, 140, 140, 255} end,
-    MenuDimmed = function() return {75, 75, 75, 255} end,
-    MenuExtraDimmed = function() return {50, 50, 50, 255} end,
-    BriefTitle = function() return {95, 95, 95, 255} end,
-    MidGreyMp = function() return {100, 100, 100, 255} end,
-    NetPlayer1Dark = function() return {93, 39, 39, 255} end,
-    NetPlayer2Dark = function() return {77, 55, 89, 255} end,
-    NetPlayer3Dark = function() return {124, 62, 99, 255} end,
-    NetPlayer4Dark = function() return {120, 80, 80, 255} end,
-    NetPlayer5Dark = function() return {87, 72, 66, 255} end,
-    NetPlayer6Dark = function() return {74, 103, 83, 255} end,
-    NetPlayer7Dark = function() return {60, 85, 88, 255} end,
-    NetPlayer8Dark = function() return {105, 105, 64, 255} end,
-    NetPlayer9Dark = function() return {72, 63, 76, 255} end,
-    NetPlayer10Dark = function() return {53, 98, 95, 255} end,
-    NetPlayer11Dark = function() return {107, 98, 76, 255} end,
-    NetPlayer12Dark = function() return {117, 71, 40, 255} end,
-    NetPlayer13Dark = function() return {76, 101, 117, 255} end,
-    NetPlayer14Dark = function() return {65, 35, 47, 255} end,
-    NetPlayer15Dark = function() return {72, 71, 61, 255} end,
-    NetPlayer16Dark = function() return {85, 58, 47, 255} end,
-    NetPlayer17Dark = function() return {87, 84, 84, 255} end,
-    NetPlayer18Dark = function() return {116, 71, 77, 255} end,
-    NetPlayer19Dark = function() return {93, 107, 45, 255} end,
-    NetPlayer20Dark = function() return {6, 61, 43, 255} end,
-    NetPlayer21Dark = function() return {61, 98, 127, 255} end,
-    NetPlayer22Dark = function() return {85, 30, 115, 255} end,
-    NetPlayer23Dark = function() return {103, 84, 6, 255} end,
-    NetPlayer24Dark = function() return {35, 49, 86, 255} end,
-    NetPlayer25Dark = function() return {21, 83, 92, 255} end,
-    NetPlayer26Dark = function() return {93, 98, 62, 255} end,
-    NetPlayer27Dark = function() return {100, 112, 127, 255} end,
-    NetPlayer28Dark = function() return {120, 120, 75, 255} end,
-    NetPlayer29Dark = function() return {152, 76, 93, 255} end,
-    NetPlayer30Dark = function() return {124, 69, 69, 255} end,
-    NetPlayer31Dark = function() return {10, 43, 50, 255} end,
-    NetPlayer32Dark = function() return {95, 95, 10, 255} end,
-    Bronze = function() return {180, 130, 97, 255} end,
-    Silver = function() return {150, 153, 161, 255} end,
-    Gold = function() return {214, 181, 99, 255} end,
-    Platinum = function() return {166, 221, 190, 255} end,
-    Gang1 = function() return {29, 100, 153, 255} end,
-    Gang2 = function() return {214, 116, 15, 255} end,
-    Gang3 = function() return {135, 125, 142, 255} end,
-    Gang4 = function() return {229, 119, 185, 255} end,
-    SameCrew = function() return {252, 239, 166, 255} end,
-    Freemode = function() return {45, 110, 185, 255} end,
-    PauseBg = function() return {0, 0, 0, 255} end,
-    Friendly = function() return {93, 182, 229, 255} end,
-    Enemy = function() return {194, 80, 80, 255} end,
-    Location = function() return {240, 200, 80, 255} end,
-    Pickup = function() return {114, 204, 114, 255} end,
-    PauseSingleplayer = function() return {114, 204, 114, 255} end,
-    FreemodeDark = function() return {22, 55, 92, 255} end,
-    InactiveMission = function() return {154, 154, 154, 255} end,
-    Damage = function() return {194, 80, 80, 255} end,
-    PinkLight = function() return {252, 115, 201, 255} end,
-    PmMitemHighlight = function() return {252, 177, 49, 255} end,
-    ScriptVariable = function() return {0, 0, 0, 255} end,
-    Yoga = function() return {109, 247, 204, 255} end,
-    Tennis = function() return {241, 101, 34, 255} end,
-    Golf = function() return {214, 189, 97, 255} end,
-    ShootingRange = function() return {112, 25, 25, 255} end,
-    FlightSchool = function() return {47, 92, 115, 255} end,
-    NorthBlue = function() return {93, 182, 229, 255} end,
-    SocialClub = function() return {234, 153, 28, 255} end,
-    PlatformBlue = function() return {11, 55, 123, 255} end,
-    PlatformGreen = function() return {146, 200, 62, 255} end,
-    PlatformGrey = function() return {234, 153, 28, 255} end,
-    FacebookBlue = function() return {66, 89, 148, 255} end,
-    IngameBg = function() return {0, 0, 0, 255} end,
-    Darts = function() return {114, 204, 114, 255} end,
-    Waypoint = function() return {164, 76, 242, 255} end,
-    Michael = function() return {101, 180, 212, 255} end,
-    Franklin = function() return {171, 237, 171, 255} end,
-    Trevor = function() return {255, 163, 87, 255} end,
-    GolfP1 = function() return {240, 240, 240, 255} end,
-    GolfP2 = function() return {235, 239, 30, 255} end,
-    GolfP3 = function() return {255, 149, 14, 255} end,
-    GolfP4 = function() return {246, 60, 161, 255} end,
-    WaypointLight = function() return {210, 166, 249, 255} end,
-    WaypointDark = function() return {82, 38, 121, 255} end,
-    PanelLight = function() return {0, 0, 0, 255} end,
-    MichaelDark = function() return {72, 103, 116, 255} end,
-    FranklinDark = function() return {85, 118, 85, 255} end,
-    TrevorDark = function() return {127, 81, 43, 255} end,
-    ObjectiveRoute = function() return {240, 200, 80, 255} end,
-    PausemapTint = function() return {0, 0, 0, 255} end,
-    PauseDeselect = function() return {100, 100, 100, 255} end,
-    PmWeaponsPurchasable = function() return {45, 110, 185, 255} end,
-    PmWeaponsLocked = function() return {240, 240, 240, 255} end,
-    EndScreenBg = function() return {0, 0, 0, 255} end,
-    Chop = function() return {224, 50, 50, 255} end,
-    PausemapTintHalf = function() return {0, 0, 0, 255} end,
-    NorthBlueOfficial = function() return {0, 71, 133, 255} end,
-    ScriptVariable2 = function() return {0, 0, 0, 255} end,
-    H = function() return {33, 118, 37, 255} end,
-    HDark = function() return {37, 102, 40, 255} end,
-    T = function() return {234, 153, 28, 255} end,
-    TDark = function() return {225, 140, 8, 255} end,
-    HShard = function() return {20, 40, 0, 255} end,
-    ControllerMichael = function() return {48, 255, 255, 255} end,
-    ControllerFranklin = function() return {48, 255, 0, 255} end,
-    ControllerTrevor = function() return {176, 80, 0, 255} end,
-    ControllerChop = function() return {127, 0, 0, 255} end,
-    VideoEditorVideo = function() return {53, 166, 224, 255} end,
-    VideoEditorAudio = function() return {162, 79, 157, 255} end,
-    VideoEditorText = function() return {104, 192, 141, 255} end,
-    HbBlue = function() return {29, 100, 153, 255} end,
-    HbYellow = function() return {234, 153, 28, 255} end,
-    VideoEditorScore = function() return {240, 160, 1, 255} end,
-    VideoEditorAudioFadeout = function() return {59, 34, 57, 255} end,
-    VideoEditorTextFadeout = function() return {41, 68, 53, 255} end,
-    VideoEditorScoreFadeout = function() return {82, 58, 10, 255} end,
-    HeistBackground = function() return {37, 102, 40, 255} end,
-    VideoEditorAmbient = function() return {240, 200, 80, 255} end,
-    VideoEditorAmbientFadeout = function() return {80, 70, 34, 255} end,
-    Gb = function() return {255, 133, 85, 255} end,
-    G = function() return {255, 194, 170, 255} end,
-    B = function() return {255, 133, 85, 255} end,
-    LowFlow = function() return {240, 200, 80, 255} end,
-    LowFlowDark = function() return {126, 107, 41, 255} end,
-    G1 = function() return {247, 159, 123, 255} end,
-    G2 = function() return {226, 134, 187, 255} end,
-    G3 = function() return {239, 238, 151, 255} end,
-    G4 = function() return {113, 169, 175, 255} end,
-    G5 = function() return {160, 140, 193, 255} end,
-    G6 = function() return {141, 206, 167, 255} end,
-    G7 = function() return {181, 214, 234, 255} end,
-    G8 = function() return {178, 144, 132, 255} end,
-    G9 = function() return {0, 132, 114, 255} end,
-    G10 = function() return {216, 85, 117, 255} end,
-    G11 = function() return {30, 100, 152, 255} end,
-    G12 = function() return {43, 181, 117, 255} end,
-    G13 = function() return {233, 141, 79, 255} end,
-    G14 = function() return {137, 210, 215, 255} end,
-    G15 = function() return {134, 125, 141, 255} end,
-    Adversary = function() return {109, 34, 33, 255} end,
-    DegenRed = function() return {255, 0, 0, 255} end,
-    DegenYellow = function() return {255, 255, 0, 255} end,
-    DegenGreen = function() return {0, 255, 0, 255} end,
-    DegenCyan = function() return {0, 255, 255, 255} end,
-    DegenBlue = function() return {0, 0, 255, 255} end,
-    DegenMagenta = function() return {255, 0, 255, 255} end,
-    Stunt1 = function() return {38, 136, 234, 255} end,
-    Stunt2 = function() return {224, 50, 50, 255} end,
+    PureWhite = {255, 255, 255, 255},
+    White = {240, 240, 240, 255},
+    Black = {0, 0, 0, 255},
+    Grey = {155, 155, 155, 255},
+    GreyLight = {205, 205, 205, 255},
+    GreyDark = {77, 77, 77, 255},
+    Red = {224, 50, 50, 255},
+    RedLight = {240, 153, 153, 255},
+    RedDark = {112, 25, 25, 255},
+    Blue = {93, 182, 229, 255},
+    BlueLight = {174, 219, 242, 255},
+    BlueDark = {47, 92, 115, 255},
+    Yellow = {240, 200, 80, 255},
+    YellowLight = {254, 235, 169, 255},
+    YellowDark = {126, 107, 41, 255},
+    Orange = {255, 133, 85, 255},
+    OrangeLight = {255, 194, 170, 255},
+    OrangeDark = {127, 66, 42, 255},
+    Green = {114, 204, 114, 255},
+    GreenLight = {185, 230, 185, 255},
+    GreenDark = {57, 102, 57, 255},
+    Purple = {132, 102, 226, 255},
+    PurpleLight = {192, 179, 239, 255},
+    PurpleDark = {67, 57, 111, 255},
+    Pink = {203, 54, 148, 255},
+    RadarHealth = {53, 154, 71, 255},
+    RadarArmour = {93, 182, 229, 255},
+    RadarDamage = {235, 36, 39, 255},
+    NetPlayer1 = {194, 80, 80, 255},
+    NetPlayer2 = {156, 110, 175, 255},
+    NetPlayer3 = {255, 123, 196, 255},
+    NetPlayer4 = {247, 159, 123, 255},
+    NetPlayer5 = {178, 144, 132, 255},
+    NetPlayer6 = {141, 206, 167, 255},
+    NetPlayer7 = {113, 169, 175, 255},
+    NetPlayer8 = {211, 209, 231, 255},
+    NetPlayer9 = {144, 127, 153, 255},
+    NetPlayer10 = {106, 196, 191, 255},
+    NetPlayer11 = {214, 196, 153, 255},
+    NetPlayer12 = {234, 142, 80, 255},
+    NetPlayer13 = {152, 203, 234, 255},
+    NetPlayer14 = {178, 98, 135, 255},
+    NetPlayer15 = {144, 142, 122, 255},
+    NetPlayer16 = {166, 117, 94, 255},
+    NetPlayer17 = {175, 168, 168, 255},
+    NetPlayer18 = {232, 142, 155, 255},
+    NetPlayer19 = {187, 214, 91, 255},
+    NetPlayer20 = {12, 123, 86, 255},
+    NetPlayer21 = {123, 196, 255, 255},
+    NetPlayer22 = {171, 60, 230, 255},
+    NetPlayer23 = {206, 169, 13, 255},
+    NetPlayer24 = {71, 99, 173, 255},
+    NetPlayer25 = {42, 166, 185, 255},
+    NetPlayer26 = {186, 157, 125, 255},
+    NetPlayer27 = {201, 225, 255, 255},
+    NetPlayer28 = {240, 240, 150, 255},
+    NetPlayer29 = {237, 140, 161, 255},
+    NetPlayer30 = {249, 138, 138, 255},
+    NetPlayer31 = {252, 239, 166, 255},
+    NetPlayer32 = {240, 240, 240, 255},
+    SimpleBlipDefault = {159, 201, 166, 255},
+    MenuBlue = {140, 140, 140, 255},
+    MenuGreyLight = {140, 140, 140, 255},
+    MenuBlueExtraDark = {40, 40, 40, 255},
+    MenuYellow = {240, 160, 0, 255},
+    MenuYellowDark = {240, 160, 0, 255},
+    MenuGreen = {240, 160, 0, 255},
+    MenuGrey = {140, 140, 140, 255},
+    MenuGreyDark = {60, 60, 60, 255},
+    MenuHighlight = {30, 30, 30, 255},
+    MenuStandard = {140, 140, 140, 255},
+    MenuDimmed = {75, 75, 75, 255},
+    MenuExtraDimmed = {50, 50, 50, 255},
+    BriefTitle = {95, 95, 95, 255},
+    MidGreyMp = {100, 100, 100, 255},
+    NetPlayer1Dark = {93, 39, 39, 255},
+    NetPlayer2Dark = {77, 55, 89, 255},
+    NetPlayer3Dark = {124, 62, 99, 255},
+    NetPlayer4Dark = {120, 80, 80, 255},
+    NetPlayer5Dark = {87, 72, 66, 255},
+    NetPlayer6Dark = {74, 103, 83, 255},
+    NetPlayer7Dark = {60, 85, 88, 255},
+    NetPlayer8Dark = {105, 105, 64, 255},
+    NetPlayer9Dark = {72, 63, 76, 255},
+    NetPlayer10Dark = {53, 98, 95, 255},
+    NetPlayer11Dark = {107, 98, 76, 255},
+    NetPlayer12Dark = {117, 71, 40, 255},
+    NetPlayer13Dark = {76, 101, 117, 255},
+    NetPlayer14Dark = {65, 35, 47, 255},
+    NetPlayer15Dark = {72, 71, 61, 255},
+    NetPlayer16Dark = {85, 58, 47, 255},
+    NetPlayer17Dark = {87, 84, 84, 255},
+    NetPlayer18Dark = {116, 71, 77, 255},
+    NetPlayer19Dark = {93, 107, 45, 255},
+    NetPlayer20Dark = {6, 61, 43, 255},
+    NetPlayer21Dark = {61, 98, 127, 255},
+    NetPlayer22Dark = {85, 30, 115, 255},
+    NetPlayer23Dark = {103, 84, 6, 255},
+    NetPlayer24Dark = {35, 49, 86, 255},
+    NetPlayer25Dark = {21, 83, 92, 255},
+    NetPlayer26Dark = {93, 98, 62, 255},
+    NetPlayer27Dark = {100, 112, 127, 255},
+    NetPlayer28Dark = {120, 120, 75, 255},
+    NetPlayer29Dark = {152, 76, 93, 255},
+    NetPlayer30Dark = {124, 69, 69, 255},
+    NetPlayer31Dark = {10, 43, 50, 255},
+    NetPlayer32Dark = {95, 95, 10, 255},
+    Bronze = {180, 130, 97, 255},
+    Silver = {150, 153, 161, 255},
+    Gold = {214, 181, 99, 255},
+    Platinum = {166, 221, 190, 255},
+    Gang1 = {29, 100, 153, 255},
+    Gang2 = {214, 116, 15, 255},
+    Gang3 = {135, 125, 142, 255},
+    Gang4 = {229, 119, 185, 255},
+    SameCrew = {252, 239, 166, 255},
+    Freemode = {45, 110, 185, 255},
+    PauseBg = {0, 0, 0, 255},
+    Friendly = {93, 182, 229, 255},
+    Enemy = {194, 80, 80, 255},
+    Location = {240, 200, 80, 255},
+    Pickup = {114, 204, 114, 255},
+    PauseSingleplayer = {114, 204, 114, 255},
+    FreemodeDark = {22, 55, 92, 255},
+    InactiveMission = {154, 154, 154, 255},
+    Damage = {194, 80, 80, 255},
+    PinkLight = {252, 115, 201, 255},
+    PmMitemHighlight = {252, 177, 49, 255},
+    ScriptVariable = {0, 0, 0, 255},
+    Yoga = {109, 247, 204, 255},
+    Tennis = {241, 101, 34, 255},
+    Golf = {214, 189, 97, 255},
+    ShootingRange = {112, 25, 25, 255},
+    FlightSchool = {47, 92, 115, 255},
+    NorthBlue = {93, 182, 229, 255},
+    SocialClub = {234, 153, 28, 255},
+    PlatformBlue = {11, 55, 123, 255},
+    PlatformGreen = {146, 200, 62, 255},
+    PlatformGrey = {234, 153, 28, 255},
+    FacebookBlue = {66, 89, 148, 255},
+    IngameBg = {0, 0, 0, 255},
+    Darts = {114, 204, 114, 255},
+    Waypoint = {164, 76, 242, 255},
+    Michael = {101, 180, 212, 255},
+    Franklin = {171, 237, 171, 255},
+    Trevor = {255, 163, 87, 255},
+    GolfP1 = {240, 240, 240, 255},
+    GolfP2 = {235, 239, 30, 255},
+    GolfP3 = {255, 149, 14, 255},
+    GolfP4 = {246, 60, 161, 255},
+    WaypointLight = {210, 166, 249, 255},
+    WaypointDark = {82, 38, 121, 255},
+    PanelLight = {0, 0, 0, 255},
+    MichaelDark = {72, 103, 116, 255},
+    FranklinDark = {85, 118, 85, 255},
+    TrevorDark = {127, 81, 43, 255},
+    ObjectiveRoute = {240, 200, 80, 255},
+    PausemapTint = {0, 0, 0, 255},
+    PauseDeselect = {100, 100, 100, 255},
+    PmWeaponsPurchasable = {45, 110, 185, 255},
+    PmWeaponsLocked = {240, 240, 240, 255},
+    ScreenBg = {0, 0, 0, 255},
+    Chop = {224, 50, 50, 255},
+    PausemapTintHalf = {0, 0, 0, 255},
+    NorthBlueOfficial = {0, 71, 133, 255},
+    ScriptVariable2 = {0, 0, 0, 255},
+    H = {33, 118, 37, 255},
+    HDark = {37, 102, 40, 255},
+    T = {234, 153, 28, 255},
+    TDark = {225, 140, 8, 255},
+    HShard = {20, 40, 0, 255},
+    ControllerMichael = {48, 255, 255, 255},
+    ControllerFranklin = {48, 255, 0, 255},
+    ControllerTrevor = {176, 80, 0, 255},
+    ControllerChop = {127, 0, 0, 255},
+    VideoEditorVideo = {53, 166, 224, 255},
+    VideoEditorAudio = {162, 79, 157, 255},
+    VideoEditorText = {104, 192, 141, 255},
+    HbBlue = {29, 100, 153, 255},
+    HbYellow = {234, 153, 28, 255},
+    VideoEditorScore = {240, 160, 1, 255},
+    VideoEditorAudioFadeout = {59, 34, 57, 255},
+    VideoEditorTextFadeout = {41, 68, 53, 255},
+    VideoEditorScoreFadeout = {82, 58, 10, 255},
+    HeistBackground = {37, 102, 40, 255},
+    VideoEditorAmbient = {240, 200, 80, 255},
+    VideoEditorAmbientFadeout = {80, 70, 34, 255},
+    Gb = {255, 133, 85, 255},
+    G = {255, 194, 170, 255},
+    B = {255, 133, 85, 255},
+    LowFlow = {240, 200, 80, 255},
+    LowFlowDark = {126, 107, 41, 255},
+    G1 = {247, 159, 123, 255},
+    G2 = {226, 134, 187, 255},
+    G3 = {239, 238, 151, 255},
+    G4 = {113, 169, 175, 255},
+    G5 = {160, 140, 193, 255},
+    G6 = {141, 206, 167, 255},
+    G7 = {181, 214, 234, 255},
+    G8 = {178, 144, 132, 255},
+    G9 = {0, 132, 114, 255},
+    G10 = {216, 85, 117, 255},
+    G11 = {30, 100, 152, 255},
+    G12 = {43, 181, 117, 255},
+    G13 = {233, 141, 79, 255},
+    G14 = {137, 210, 215, 255},
+    G15 = {134, 125, 141, 255},
+    Adversary = {109, 34, 33, 255},
+    DegenRed = {255, 0, 0, 255},
+    DegenYellow = {255, 255, 0, 255},
+    DegenGreen = {0, 255, 0, 255},
+    DegenCyan = {0, 255, 255, 255},
+    DegenBlue = {0, 0, 255, 255},
+    DegenMagenta = {255, 0, 255, 255},
+    Stunt1 = {38, 136, 234, 255},
+    Stunt2 = {224, 50, 50, 255},
 }
 
 --[[
@@ -1595,6 +1599,185 @@ function UIMenuColouredItem:Draw()
 end
 
 --[[
+    UIMenuProgressItem.lua
+    Items
+--]]
+
+function UIMenuProgressItem.New(Text, Items, Index, Description, Counter)
+    if type(Items) ~= "table" then Items = {} end
+    if Index == 0 then Index = 1 end
+    local _UIMenuProgressItem = {
+        Base = UIMenuItem.New(Text or "", Description or ""),
+        Data = {
+            Items = Items,
+            Counter = tobool(Counter),
+            Max = 407.5,
+            Index = tonumber(Index) or 1,
+        },
+        Background = UIResRectangle.New(0, 0, 415, 20),
+        Bar = UIResRectangle.New(0, 0, 407.5, 12.5),
+        OnProgressChanged = function(menu, item, newindex) end,
+        OnProgressSelected = function(menu, item, newindex) end,
+    }
+
+    _UIMenuProgressItem.Base.Rectangle.Height = 60
+    _UIMenuProgressItem.Base.SelectedSprite.Height = 60
+
+    if _UIMenuProgressItem.Data.Counter then
+        _UIMenuProgressItem.Base:RightLabel(_UIMenuProgressItem.Data.Index.."/"..#_UIMenuProgressItem.Data.Items)
+    else
+        _UIMenuProgressItem.Base:RightLabel((type(_UIMenuProgressItem.Data.Items[_UIMenuProgressItem.Data.Index]) == "table") and tostring(_UIMenuProgressItem.Data.Items[_UIMenuProgressItem.Data.Index].Name) or tostring(_UIMenuProgressItem.Data.Items[_UIMenuProgressItem.Data.Index]))
+    end
+
+    _UIMenuProgressItem.Bar.Width = _UIMenuProgressItem.Data.Index/#_UIMenuProgressItem.Data.Items * _UIMenuProgressItem.Data.Max
+
+    return setmetatable(_UIMenuProgressItem, UIMenuProgressItem)
+end
+
+function UIMenuProgressItem:SetParentMenu(Menu)
+    if Menu() == "UIMenu" then
+        self.Base.ParentMenu = Menu
+    else
+        return self.Base.ParentMenu
+    end
+end
+
+function UIMenuProgressItem:Position(Y)
+    if tonumber(Y) then
+        self.Base:Position(Y)
+        self.Background:Position(8 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, 177 + Y + self.Base._Offset.Y)
+        self.Bar:Position(11.75 + self.Base._Offset.X + self.Base.ParentMenu.WidthOffset, 180.75 + Y + self.Base._Offset.Y)
+    end
+end
+
+function UIMenuProgressItem:Selected(bool)
+    if bool ~= nil then
+        self.Base._Selected = tobool(bool)
+    else
+        return self.Base._Selected
+    end
+end
+
+function UIMenuProgressItem:Hovered(bool)
+    if bool ~= nil then
+        self.Base._Hovered = tobool(bool)
+    else
+        return self.Base._Hovered
+    end
+end
+
+function UIMenuProgressItem:Enabled(bool)
+    if bool ~= nil then
+        self.Base._Enabled = tobool(bool)
+    else
+        return self.Base._Enabled
+    end
+end
+
+function UIMenuProgressItem:Description(str)
+    if tostring(str) and str ~= nil then
+        self.Base._Description = tostring(str)
+    else
+        return self.Base._Description
+    end
+end
+
+function UIMenuProgressItem:Offset(X, Y)
+    if tonumber(X) or tonumber(Y) then
+        if tonumber(X) then
+            self.Base._Offset.X = tonumber(X)
+        end
+        if tonumber(Y) then
+            self.Base._Offset.Y = tonumber(Y)
+        end
+    else
+        return self.Base._Offset
+    end
+end
+
+function UIMenuProgressItem:Text(Text)
+    if tostring(Text) and Text ~= nil then
+        self.Base.Text:Text(tostring(Text))
+    else
+        return self.Base.Text:Text()
+    end
+end
+
+function UIMenuProgressItem:Index(Index)
+    if tonumber(Index) then
+        if tonumber(Index) > #self.Data.Items then
+            self.Data.Index = 1
+        elseif tonumber(Index) < 1 then
+            self.Data.Index = #self.Data.Items
+        else
+            self.Data.Index = tonumber(Index)
+        end
+
+        if self.Data.Counter then
+            self.Base:RightLabel(self.Data.Index.."/"..#self.Data.Items)
+        else
+            self.Base:RightLabel((type(self.Data.Items[self.Data.Index]) == "table") and tostring(self.Data.Items[self.Data.Index].Name) or tostring(self.Data.Items[self.Data.Index]))
+        end
+
+        self.Bar.Width = self.Data.Index/#self.Data.Items * self.Data.Max
+    else
+        return self.Data.Index
+    end
+end
+
+function UIMenuProgressItem:ItemToIndex(Item)
+    for i = 1, #self.Data.Items do
+        if type(Item) == type(self.Data.Items[i]) and Item == self.Data.Items[i] then
+            return i
+        elseif type(self.Data.Items[i]) == "table" and (type(Item) == type(self.Data.Items[i].Name) or type(Item) == type(self.Data.Items[i].Value)) and (Item == self.Data.Items[i].Name or Item == self.Data.Items[i].Value) then
+            return i
+        end
+    end
+end
+
+function UIMenuProgressItem:IndexToItem(Index)
+    if tonumber(Index) then
+        if tonumber(Index) == 0 then Index = 1 end
+        if self.Data.Items[tonumber(Index)] then
+            return self.Data.Items[tonumber(Index)]
+        end
+    end
+end
+
+function UIMenuProgressItem:SetLeftBadge()
+    error("This item does not support badges")
+end
+
+function UIMenuProgressItem:SetRightBadge()
+    error("This item does not support badges")
+end
+
+function UIMenuProgressItem:RightLabel()
+    error("This item does not support a right label")
+end
+
+function UIMenuProgressItem:CalculateProgress(CursorX)
+    local Progress = CursorX - self.Bar.X
+    print("Calculated index = "..math.round(#self.Data.Items * (((Progress >= 0 and Progress <= self.Data.Max) and Progress or ((Progress < 0) and 0 or self.Data.Max))/self.Data.Max)))
+    self:Index(math.round(#self.Data.Items * (((Progress >= 0 and Progress <= self.Data.Max) and Progress or ((Progress < 0) and 0 or self.Data.Max))/self.Data.Max)))
+end
+
+function UIMenuProgressItem:Draw()
+    self.Base:Draw()
+
+    if self.Base._Selected then
+        self.Background:Colour(table.unpack(Colours.Black))
+        self.Bar:Colour(table.unpack(Colours.White))
+    else
+        self.Background:Colour(table.unpack(Colours.White))
+        self.Bar:Colour(table.unpack(Colours.Black))
+    end
+
+    self.Background:Draw()
+    self.Bar:Draw()
+end
+
+--[[
     UIMenuHeritageWindow.lua
     Windows
 --]]
@@ -2228,9 +2411,11 @@ function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
         OnIndexChange = function(menu, newindex) end,
         OnListChange = function(menu, list, newindex) end,
         OnSliderChange = function(menu, slider, newindex) end,
+        OnProgressChange = function(menu, progress, newindex) end,
         OnCheckboxChange = function(menu, item, checked) end,
         OnListSelect = function(menu, list, index) end,
         OnSliderSelect = function(menu, slider, index) end,
+        OnProgressSelect = function(menu, progress, index) end,
         OnItemSelect = function(menu, item, index) end,
         OnMenuChanged = function(menu, newmenu, forward) end,
         OnMenuClosed = function(menu) end,
@@ -2290,7 +2475,7 @@ function UIMenu:SetMenuWidthOffset(Offset)
     if tonumber(Offset) then
         self.WidthOffset = math.floor(tonumber(Offset))
         self.Logo:Size(431 + self.WidthOffset, 107)
-        self.Title:Position(((self.WidthOffset + 431)/2) + self.Position.X, 20 + self.Position.Y)
+        self.Title:Position((self.WidthOffset + self.Position.X + 431) / 2, 20 + self.Position.Y)
         if self.Subtitle.Rectangle ~= nil then
             self.Subtitle.Rectangle:Size(431 + self.WidthOffset + 100, 37)            
             self.PageCounter.Text:Position(425 + self.Position.X + self.WidthOffset, 110 + self.Position.Y)
@@ -2815,7 +3000,7 @@ end
 
 function UIMenu:GoLeft()
     local type, subtype = self.Items[self:CurrentSelection()]()
-    if subtype ~= "UIMenuListItem" and subtype ~= "UIMenuSliderItem" then
+    if subtype ~= "UIMenuListItem" and subtype ~= "UIMenuSliderItem" and subtype ~= "UIMenuProgressItem" then
         return
     end
 
@@ -2830,13 +3015,19 @@ function UIMenu:GoLeft()
         Item:Index(Item._Index - 1)
         self.OnSliderChange(self, Item, Item:Index())
         Item.OnSliderChanged(self, Item, Item._Index)
+        PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
+    elseif subtype == "UIMenuProgressItem" then
+        local Item = self.Items[self:CurrentSelection()]
+        Item:Index(Item.Data.Index - 1)
+        self.OnProgressChange(self, Item, Item.Data.Index)
+        Item.OnProgressChanged(self, Item, Item.Data.Index)
         PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
     end
 end
 
 function UIMenu:GoRight()
     local type, subtype = self.Items[self:CurrentSelection()]()
-    if subtype ~= "UIMenuListItem" and subtype ~= "UIMenuSliderItem" then
+    if subtype ~= "UIMenuListItem" and subtype ~= "UIMenuSliderItem" and subtype ~= "UIMenuProgressItem" then
         return
     end
 
@@ -2851,6 +3042,12 @@ function UIMenu:GoRight()
         Item:Index(Item._Index + 1)
         self.OnSliderChange(self, Item, Item:Index())
         Item.OnSliderChanged(self, Item, Item._Index)
+        PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
+    elseif subtype == "UIMenuProgressItem" then
+        local Item = self.Items[self:CurrentSelection()]
+        Item:Index(Item.Data.Index + 1)
+        self.OnProgressChange(self, Item, Item.Data.Index)
+        Item.OnProgressChanged(self, Item, Item.Data.Index)
         PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
     end
 end
@@ -2874,7 +3071,11 @@ function UIMenu:SelectItem()
     elseif subtype == "UIMenuSliderItem" then
         PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
         self.OnSliderSelect(self, Item, Item._Index)
-        Item.OnSliderSelected(self, Item, Item._Index)
+        Item.OnSliderSelected(Item._Index)
+    elseif subtype == "UIMenuProgressItem" then
+        PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
+        self.OnProgressSelect(self, Item, Item.Data.Index)
+        Item.OnProgressSelected(Item.Data.Index)        
     else
         PlaySoundFrontend(-1, self.Settings.Audio.Select, self.Settings.Audio.Library, true)
         self.OnItemSelect(self, Item, self:CurrentSelection())
@@ -3084,9 +3285,9 @@ function UIMenu:ProcessMouse()
 
     for i = self.Pagination.Min + 1, Limit, 1 do
         local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + ItemOffset + SafeZone.Y + WindowHeight
-        local Width, Height = 431 + self.WidthOffset, 38
         local Item = self.Items[i]
         local Type, SubType = Item()
+        local Width, Height = 431 + self.WidthOffset, self:CalculateItemHeightOffset(Item)
 
         if IsMouseInBounds(X, Y, Width, Height) then
             Item:Hovered(true)
@@ -3097,7 +3298,7 @@ function UIMenu:ProcessMouse()
                         self.Controls.MousePressed = true
                         if Item:Selected() and Item:Enabled() then
                             if SubType == "UIMenuListItem" then
-                                if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height ) then
+                                if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
                                     self:GoLeft()
                                 elseif not IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
                                     self:SelectItem()
@@ -3116,6 +3317,13 @@ function UIMenu:ProcessMouse()
                                 if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
                                     self:GoRight()
                                 elseif not IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                    self:SelectItem()
+                                end
+                            elseif SubType == "UIMenuProgressItem" then
+                                if IsMouseInBounds(Item.Bar.X + SafeZone.X, Item.Bar.Y + SafeZone.Y - 12, Item.Data.Max, Item.Bar.Height + 24) then
+                                    Item:CalculateProgress(math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X)
+                                    PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
+                                else
                                     self:SelectItem()
                                 end
                             else
@@ -3146,6 +3354,12 @@ function UIMenu:ProcessMouse()
                                     end
                                     if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
                                         self:GoRight()
+                                    end
+                                elseif SubType == "UIMenuProgressItem" then
+                                    if IsMouseInBounds(Item.Bar.X + SafeZone.X, Item.Bar.Y + SafeZone.Y - 12, Item.Data.Max, Item.Bar.Height + 24) then
+                                        Item:CalculateProgress(math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X)
+                                    else
+                                        self:SelectItem()
                                     end
                                 end
                             elseif not Item:Selected() then
@@ -3518,6 +3732,10 @@ end
 
 function NativeUI.CreateSliderItem(Text, Items, Index, Description, Divider)
     return UIMenuSliderItem.New(Text, Items, Index, Description, Divider)
+end
+
+function NativeUI.CreateProgressItem(Text, Items, Index, Description, Counter)
+    return UIMenuProgressItem.New(Text, Items, Index, Description, Counter)
 end
 
 function NativeUI.CreateHeritageWindow(Mum, Dad)

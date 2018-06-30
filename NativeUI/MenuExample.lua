@@ -82,11 +82,21 @@ function AddMenuAnotherMenu(menu)
     end
 end
 
+function AddSlider2(menu)
+    local amount = {}
+    for i = 1, 100 do amount[i] = i end
+    local newitem = UIMenuProgressItem.New("Quantity", {1,2}, 1, "", true)
+    menu:AddItem(newitem)
+    local newitem2 = UIMenuProgressItem.New("Quantity", amount, 1, "", false)
+    menu:AddItem(newitem2)
+end
+
 AddMenuKetchup(mainMenu)
 AddMenuFoods(mainMenu)
 AddMenuFoodCount(mainMenu)
 AddMenuCook(mainMenu)
 AddMenuAnotherMenu(mainMenu)
+AddSlider2(mainMenu)
 _menuPool:RefreshIndex()
 
 Citizen.CreateThread(function()

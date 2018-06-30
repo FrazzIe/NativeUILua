@@ -1758,7 +1758,6 @@ end
 
 function UIMenuProgressItem:CalculateProgress(CursorX)
     local Progress = CursorX - self.Bar.X
-    print("Calculated index = "..math.round(#self.Data.Items * (((Progress >= 0 and Progress <= self.Data.Max) and Progress or ((Progress < 0) and 0 or self.Data.Max))/self.Data.Max)))
     self:Index(math.round(#self.Data.Items * (((Progress >= 0 and Progress <= self.Data.Max) and Progress or ((Progress < 0) and 0 or self.Data.Max))/self.Data.Max)))
 end
 

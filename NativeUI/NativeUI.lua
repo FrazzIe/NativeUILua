@@ -3321,7 +3321,8 @@ function UIMenu:ProcessMouse()
                             elseif SubType == "UIMenuProgressItem" then
                                 if IsMouseInBounds(Item.Bar.X + SafeZone.X, Item.Bar.Y + SafeZone.Y - 12, Item.Data.Max, Item.Bar.Height + 24) then
                                     Item:CalculateProgress(math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X)
-                                    PlaySoundFrontend(-1, self.Settings.Audio.LeftRight, self.Settings.Audio.Library, true)
+                                    self.OnProgressChange(self, Item, Item.Data.Index)
+                                    Item.OnProgressChanged(self, Item, Item.Data.Index)
                                 else
                                     self:SelectItem()
                                 end
@@ -3357,6 +3358,8 @@ function UIMenu:ProcessMouse()
                                 elseif SubType == "UIMenuProgressItem" then
                                     if IsMouseInBounds(Item.Bar.X + SafeZone.X, Item.Bar.Y + SafeZone.Y - 12, Item.Data.Max, Item.Bar.Height + 24) then
                                         Item:CalculateProgress(math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X)
+                                        self.OnProgressChange(self, Item, Item.Data.Index)
+                                        Item.OnProgressChanged(self, Item, Item.Data.Index)
                                     else
                                         self:SelectItem()
                                     end

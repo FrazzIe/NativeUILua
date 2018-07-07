@@ -134,7 +134,7 @@ BadgeTexture = {
 		if Selected then
 			return "shop_tattoos_icon_b"
 		else
-			return "shop_tattoos_icon_"
+			return "shop_tattoos_icon_a"
 		end
 	end,
 	[20] = function(Selected)

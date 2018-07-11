@@ -111,6 +111,7 @@ function UIMenuColouredItem:SetRightBadge(Badge)
 end
 
 function UIMenuColouredItem:Draw()
+	self.Rectangle:Size(431 + self.ParentMenu.WidthOffset, self.Rectangle.Height)
 	self.Rectangle:Draw()
 	self.Base:Draw()
 end

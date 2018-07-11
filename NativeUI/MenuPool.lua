@@ -8,7 +8,7 @@ function MenuPool.New()
 	return setmetatable(_MenuPool, MenuPool)
 end
 
-function MenuPool:AddSubMenu(Menu, Text, Description, KeepPosition)
+function MenuPool:AddSubMenu(Menu, Text, Description, KeepPosition, KeepBanner)
 	if Menu() == "UIMenu" then
 		local Item = UIMenuItem.New(tostring(Text), Description or "")
 		Menu:AddItem(Item)
@@ -17,6 +17,14 @@ function MenuPool:AddSubMenu(Menu, Text, Description, KeepPosition)
 			SubMenu = UIMenu.New(Menu.Title:Text(), Text, Menu.Position.X, Menu.Position.Y)
 		else
 			SubMenu = UIMenu.New(Menu.Title:Text(), Text)
+		end
+		if KeepBanner then
+			if Menu.Logo ~= nil then
+				SubMenu.Logo = Menu.Logo
+			else
+				SubMenu.Logo = nil
+				SubMenu.Banner = Menu.Banner
+			end
 		end
 		self:Add(SubMenu)
 		Menu:BindMenuToItem(SubMenu, Item)

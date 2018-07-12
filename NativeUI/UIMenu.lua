@@ -77,6 +77,43 @@ function UIMenu.New(Title, Subtitle, X, Y, TxtDictionary, TxtName)
 				Back = "BACK",
 				Error = "ERROR",
 			},
+            EnabledControls = {
+                Controller = {
+                    {0, 2}, -- Look Up and Down
+                    {0, 1}, -- Look Left and Right
+                    {0, 25}, -- Aim
+                    {0, 24}, -- Attack
+                },
+                Keyboard = {
+                    {0, 201}, -- Select
+                    {0, 195}, -- X axis
+                    {0, 196}, -- Y axis
+                    {0, 187}, -- Down
+                    {0, 188}, -- Up
+                    {0, 189}, -- Left
+                    {0, 190}, -- Right
+                    {0, 202}, -- Back
+                    {0, 217}, -- Select
+                    {0, 242}, -- Scroll down
+                    {0, 241}, -- Scroll up
+                    {0, 239}, -- Cursor X
+                    {0, 240}, -- Cursor Y
+                    {0, 31}, -- Move Up and Down
+                    {0, 30}, -- Move Left and Right
+                    {0, 21}, -- Sprint
+                    {0, 22}, -- Jump
+                    {0, 23}, -- Enter
+                    {0, 75}, -- Exit Vehicle
+                    {0, 71}, -- Accelerate Vehicle
+                    {0, 72}, -- Vehicle Brake
+                    {0, 59}, -- Move Vehicle Left and Right
+                    {0, 89}, -- Fly Yaw Left
+                    {0, 9}, -- Fly Left and Right
+                    {0, 8}, -- Fly Up and Down
+                    {0, 90}, -- Fly Yaw Right
+                    {0, 76}, -- Vehicle Handbrake
+                },
+            },
 		}
 	}
 
@@ -138,41 +175,16 @@ function UIMenu:DisEnableControls(bool)
 	if bool then
 		return
 	else
-		if Controller() then
-			EnableControlAction(0, 2, true)
-			EnableControlAction(0, 1, true)
-			EnableControlAction(0, 25, true)
-			EnableControlAction(0, 24, true)
-		else
-			EnableControlAction(0, 201, true)
-			EnableControlAction(0, 195, true)
-			EnableControlAction(0, 196, true)
-			EnableControlAction(0, 187, true)
-			EnableControlAction(0, 188, true)
-			EnableControlAction(0, 189, true)
-			EnableControlAction(0, 190, true)
-			EnableControlAction(0, 202, true)
-			EnableControlAction(0, 217, true)
-			EnableControlAction(0, 242, true)
-			EnableControlAction(0, 241, true)
-			EnableControlAction(0, 239, true)
-			EnableControlAction(0, 240, true)
-			EnableControlAction(0, 31, true)
-			EnableControlAction(0, 30, true)
-			EnableControlAction(0, 21, true)
-			EnableControlAction(0, 22, true)
-			EnableControlAction(0, 23, true)
-			EnableControlAction(0, 75, true)
-			EnableControlAction(0, 71, true)
-			EnableControlAction(0, 72, true)
-			EnableControlAction(0, 59, true)
-			EnableControlAction(0, 89, true)
-			EnableControlAction(0, 9, true)
-			EnableControlAction(0, 8, true)
-			EnableControlAction(0, 90, true)
-			EnableControlAction(0, 76, true)
-		end
-	end
+        if Controller() then
+            for Index = 1, #self.Settings.EnabledControls.Controller do
+                EnableControlAction(self.Settings.EnabledControls.Controller[Index][1], self.Settings.EnabledControls.Controller[Index][2], true)
+            end
+        else
+            for Index = 1, #self.Settings.EnabledControls.Keyboard do
+                EnableControlAction(self.Settings.EnabledControls.Keyboard[Index][1], self.Settings.EnabledControls.Keyboard[Index][2], true)
+            end
+        end
+    end
 end
 
 function UIMenu:InstructionalButtons(bool)
@@ -1113,6 +1125,22 @@ function UIMenu:RemoveInstructionButton(button)
 			end
 		end
 	end
+end
+
+function UIMenu:AddEnabledControl(Inputgroup, Control, Controller)
+    if tonumber(Inputgroup) and tonumber(Control) then
+        table.insert(self.Settings.EnabledControls[(Controller and "Controller" or "Keyboard")], {Inputgroup, Control})
+    end
+end
+
+function UIMenu:RemoveEnabledControl(Inputgroup, Control, Controller)
+    local Type = (Controller and "Controller" or "Keyboard")
+    for Index = 1, #self.Settings.EnabledControls[Type] do
+        if Inputgroup == self.Settings.EnabledControls[Type][Index][1] and Control == self.Settings.EnabledControls[Type][Index][2] then
+            table.remove(self.Settings.EnabledControls[Type], Index)
+            break
+        end
+    end
 end
 
 function UIMenu:UpdateScaleform()

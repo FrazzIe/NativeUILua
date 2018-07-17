@@ -55,6 +55,11 @@ function UIMenuPercentagePanel:Percentage(Value)
 		local Percent = ((Value < 0.0) and 0.0) or ((Value > 1.0) and 1.0 or Value)
 		self.ActiveBar:Size(self.BackgroundBar.Width * Percent, self.ActiveBar.Height)
 	else
+	    local SafeZone = {X = 0, Y = 0}
+	    if self.ParentItem:SetParentMenu().Settings.ScaleWithSafezone then
+	       SafeZone = GetSafeZoneBounds()
+	    end
+	    
 		local Progress = (math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X) - self.ActiveBar.X
 		return math.round(((Progress >= 0 and Progress <= 413) and Progress or ((Progress < 0) and 0 or 413))/self.BackgroundBar.Width, 2)
 	end

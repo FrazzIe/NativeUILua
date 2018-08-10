@@ -659,6 +659,11 @@ function UIMenu:GoLeft()
 		return
 	end
 
+	if not self.Items[self:CurrentSelection()]:Enabled() then
+		PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
+		return
+	end
+	
 	if subtype == "UIMenuListItem" then
 		local Item = self.Items[self:CurrentSelection()]
 		Item:Index(Item._Index - 1)
@@ -683,6 +688,11 @@ end
 function UIMenu:GoRight()
 	local type, subtype = self.Items[self:CurrentSelection()]()
 	if subtype ~= "UIMenuListItem" and subtype ~= "UIMenuSliderItem" and subtype ~= "UIMenuProgressItem" then
+		return
+	end
+
+	if not self.Items[self:CurrentSelection()]:Enabled() then
+		PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
 		return
 	end
 

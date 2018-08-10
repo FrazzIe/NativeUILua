@@ -163,6 +163,7 @@ function MenuPool:CloseAllMenus()
 	for _, Menu in pairs(self.Menus) do
 		if Menu:Visible() then
 			Menu:Visible(false)
+			Menu.OnMenuClosed(Menu)
 		end
 	end
 end

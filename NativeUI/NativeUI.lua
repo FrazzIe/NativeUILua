@@ -3625,9 +3625,13 @@ function MenuPool:Add(Menu)
 end
 
 function MenuPool:Clear()
-   self = {
-		 Menus = {}
+	self = {
+		Menus = {}
 	 }
+end
+
+function MenuPool:Remove()
+	self = nil
 end
 
 function MenuPool:MouseEdgeEnabled(bool)

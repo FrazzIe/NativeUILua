@@ -1226,6 +1226,12 @@ function UIMenuListItem:IndexToItem(Index)
     end
 end
 
+function UIMenuListItem:UpdateItems(Items)
+    if #Items > 0 then
+        self.Items = Items
+    end
+end
+
 function UIMenuListItem:SetLeftBadge()
     error("This item does not support badges")
 end

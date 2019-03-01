@@ -1,3 +1,4 @@
+⚠️ I've stopped development of this resource @iTexZoz seems to have picked it up: https://github.com/iTexZoz/NativeUILua-Reloaded
 # NativeUI in LUA for FiveM.
 ![NativeUILua Example](https://i.gyazo.com/dbf3d6bed1f98fb765e5c8f25b504607.png)
 
